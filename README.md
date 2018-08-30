@@ -26,4 +26,4 @@
 
 ---
 
-  [1]: ./协作文档
+  [1]: https://github.com/Se7suna/BoringHomePage/协作文档

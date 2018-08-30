@@ -14,15 +14,16 @@
 <style lang="less">
     @import '../static/css/reset.css';
     @import '../static/css/swiper.css';
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-    }
     .app {
-        width: 100%;
-        height: 100%;
-        background: url(../static/img/timg.jpg) no-repeat center center;
-        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        min-width: 1280px;
+        min-height: 720px;
+        background: #eee url(../static/img/timg.jpg) no-repeat center center;
     }
+
 </style>

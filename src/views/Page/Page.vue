@@ -1,5 +1,6 @@
 <template>
     <div class="page">
+        <Search/>
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <ul class="swiper-slide page_ul">
@@ -90,11 +91,11 @@
             <!-- 如果需要分页器 -->
             <div class="swiper-pagination"></div>
         </div>
-        <p class="page_msg">本系列图片均来自网络，如有侵权，请联系作者删除。</p>
     </div>
 </template>
 <script>
     import Swiper from 'swiper'
+    import Search from '../../components/Search/Search.vue'
     export default {
         mounted () {
         new Swiper('.swiper-container', {
@@ -104,10 +105,16 @@
                 el: '.swiper-pagination'
                 }
             })
+        },
+        components: {
+            Search
         }
     }
 </script>
 <style lang="less">
+    .page {
+        margin-top: -5vmax
+    }
     .swiper-container {
         width: 50vmax;
         height: 24vmax;
@@ -133,12 +140,5 @@
             margin-top: 1vmax;
             text-align: center;
         }
-    }
-    .page_msg {
-        position: absolute;
-        bottom: 5%;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #333;
     }
 </style>

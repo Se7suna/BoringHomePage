@@ -6,9 +6,4 @@
  * @version 1.0.0
  */
 
-class ClassName extends AnotherClass {
-    
-    function __construct(){
-        
-    }
-}
+ 

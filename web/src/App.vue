@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <div class="app" :style="{backgroundImage: `url(${bgImg})`}">
         <Page/>
         <Option v-if="optionShow" :optionHidden="optionHidden"/>
         <div class="app_btn" v-if="!optionShow" @click="optionShow = true"><i class="iconfont icon-shezhi"></i></div>
@@ -9,10 +9,12 @@
 <script>
     import Page from './views/Page/Page.vue'
     import Option from './views/Option/Option.vue'
+    import {reqBgImg} from './api'
     export default {
         data () {
             return {
-                optionShow: false
+                optionShow: false,
+                bgImg: ''
             }
         },
         methods: {
@@ -23,6 +25,11 @@
         components: {
             Page,
             Option
+        },
+        mounted () {
+            reqBgImg('/getRandomScreensaver.php').then(res => {
+                this.bgImg = res.imgSrc
+            })
         }
     }
 </script>
@@ -39,7 +46,7 @@
         height: 100vh;
         min-width: 1280px;
         min-height: 720px;
-        background: url(../static/img/timg.jpg) no-repeat center center;
+        background: no-repeat center center;
         background-size: 100% 100%;
     }
     .app_msg {

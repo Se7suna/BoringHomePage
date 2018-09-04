@@ -13,7 +13,7 @@ if(!isset($_GET['userId'])){
     'resData'=>array(
       
     ),
-    'resInfo'=>"错误: 缺失参数"
+    'resInfo'=>"错误: 缺失参数 userId"
   ), JSON_UNESCAPED_UNICODE);
   mysqli_close($conn);
   exit;

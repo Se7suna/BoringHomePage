@@ -58,13 +58,13 @@ if (!$check_query_group2) {
   printf("Error: %s\n", mysqli_error($conn));
   exit();
 }
-if(!mysqli_fetch_array($check_query_group2, MYSQLI_ASSOC)){
+if(mysqli_fetch_array($check_query_group2)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
       
     ),
-    'resInfo'=>'提示: 已在组中!'
+    'resInfo'=>'提示: 该用户已在组中!'
   ), JSON_UNESCAPED_UNICODE);
   mysqli_close($conn);
   exit;

@@ -1,7 +1,7 @@
 <template>
-    <div class="app" :style="{backgroundImage: `url(${bgImg})`}">
+    <div class="app" v-if="bgList.length" :style="{backgroundImage: `url(${bgList[bgNum].imgSrc})`}" @click.self="optionHidden()">
         <Page/>
-        <Option v-if="optionShow" :optionHidden="optionHidden"/>
+        <Option v-if="optionShow" :changeBg="changeBg"/>
         <div class="app_btn" v-if="!optionShow" @click="optionShow = true"><i class="iconfont icon-shezhi"></i></div>
         <p class="app_msg">本系列图片均来自网络，如有侵权，请联系作者删除。</p>
     </div>
@@ -9,17 +9,32 @@
 <script>
     import Page from './views/Page/Page.vue'
     import Option from './views/Option/Option.vue'
-    import {reqBgImg} from './api'
+    import {reqBgImg, reqUser} from './api'
     export default {
         data () {
             return {
                 optionShow: false,
-                bgImg: ''
+                bgList: [],
+                bgNum: 0
             }
         },
         methods: {
             optionHidden () {
                 this.optionShow = false
+            },
+            changeBg () {
+                if (this.bgNum + 2 === this.bgList.length) {
+                    reqBgImg('/getRandomScreensaver.php').then(res => {
+                        if (res.resCode === 1) {
+                            for (let i of res.resData.dataList) {
+                                this.bgList.push(i)
+                            }
+                        } else {
+                            console.log('增加背景图失败')
+                        }
+                    })
+                }
+                this.bgNum++
             }
         },
         components: {
@@ -28,8 +43,24 @@
         },
         mounted () {
             reqBgImg('/getRandomScreensaver.php').then(res => {
-                this.bgImg = res.imgSrc
+                if (res.resCode === 1) {
+                    this.bgList = res.resData.dataList
+                } else {
+                    console.log('获取背景图失败')
+                }
             })
+            if (window.localStorage.boring) {
+                const user = JSON.parse(window.localStorage.boring)
+                const URL = '/usersLogin.php'
+                reqUser(URL, user).then(res => {
+                    if (res.resCode === 1) {
+                        this.$store.state.user = res.resData
+                        this.$store.dispatch('getSaveList', {userId: res.resData.userId})
+                    } else {
+                        window.localStorage.boring = ''
+                    }
+                })
+            }
         }
     }
 </script>

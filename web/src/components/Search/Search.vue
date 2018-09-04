@@ -19,6 +19,9 @@
         },
         methods: {
             goTo () {
+                if (!this.searchTxt.trim()) {
+                    return
+                }
                 if (this.searchType === '1') {
                     const url = 'https://www.baidu.com/s?wd=' + this.searchTxt
                     window.location.href = url

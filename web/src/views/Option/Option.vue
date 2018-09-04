@@ -1,22 +1,20 @@
 <template>
     <div class="option">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName">
             <el-tab-pane label="收藏夹" name="first">
                 <ul>
-                    <li class="option_item">
-                        <img src="./img/jd.jpg">
-                        <p>京东商城</p>
-                    </li>
-                    <li class="option_item">
-                        <img src="./img/jd.jpg">
-                        <p>京东商城</p>
-                    </li>
+                    <template v-if="this.$store.state.saveList">
+                        <li class="option_item" v-for="i of this.$store.state.saveList.dataList" :key="i.linkId">
+                            <img :src="i.linkIco">
+                            <p>{{i.linkName}}</p>
+                            <p>{{i.linkToSrc}}</p>
+                        </li>
+                    </template>
                     <div class="option_add">
                         <el-button round @click="showAlert()">
                             <i class="el-icon-plus"></i>
                         </el-button>
                     </div>
-                    <Alert ref="alert"/>
                 </ul>
             </el-tab-pane>
             <el-tab-pane label="设置" name="second">
@@ -31,6 +29,9 @@
                         </div>
                         <div class="push">
                             <el-button type="primary">上传链接</el-button>
+                        </div>
+                        <div class="change">
+                            <el-button type="primary" @click="changeBg()">更换背景</el-button>
                         </div>
                         <ul class="list">
                             <li class="option_item">
@@ -57,22 +58,24 @@
             </el-tab-pane>
         </el-tabs>
         <div class="option_btn">
-            <el-button type="primary" plain  :loading="saveFlag" @click="save()">{{saveMsg}}</el-button>
-            <el-button type="info" plain @click="optionHidden()">关闭</el-button>
+            <el-button type="success" v-if="!$store.state.user.id" @click="showLogin()">注册 / 登录</el-button>
+            <el-button type="danger" v-else @click="logOut()">注销</el-button>
         </div>
+        <Alert ref="alert"/>
+        <Login ref="login"/>
     </div>
 </template>
 <script>
     import Alert from '../../components/Alert/Alert.vue'
+    import Login from '../../components/Login/Login.vue'
     export default {
         data () {
             return {
                 activeName: 'first',
-                saveFlag: false,
-                saveMsg: '保存',
                 user: ''
             }
         },
+        props: ['changeBg'],
         mounted () {
             if (window.localStorage.boring) {
                 this.user = JSON.parse(window.localStorage.boring)
@@ -80,32 +83,27 @@
         },
         computed: {
             loginMsg () {
-                const user = this.user
-                if (!user) {
-                    return '状态: 未加入群组'
+                const user = this.$store.state.user
+                if (!user.id) {
+                    return '状态: 未登录, 请登录!'
                 } else {
-                    if (user.hash) {
-                        return `邀请key: ${user.key}`
+                    if (user.key) {
+                        return `状态: 已加入 ${user.key}`
                     } else {
-                        return '状态: 已加入群组'
+                        return '状态: 暂未加入群组'
                     }
                 }
             },
             colorShow () {
-                return !!this.user
+                return this.$store.state.user.key
             }
         },
-        props: ['optionHidden'],
         methods: {
-            handleClick (tab, event) {
-                // console.log(tab, event)
-            },
-            save () {
-                this.saveFlag = true
-                this.saveMsg = '更新中...'
-            },
             showAlert () {
                 this.$refs.alert.show()
+            },
+            showLogin () {
+                this.$refs.login.show()
             },
             newGroup () {
                 const ls = window.localStorage
@@ -127,10 +125,14 @@
                         type: 'success'
                     })
                 }
+            },
+            logOut () {
+                this.$store.dispatch('logOut')
             }
         },
         components: {
-            Alert
+            Alert,
+            Login
         }
     }
 </script>
@@ -208,10 +210,9 @@
         left: 0;
         text-align: center;
         background-color: #fff;
-        padding: 2%;
+        padding: 6%;
         button {
-            width: 40%;
-            margin: 4%;
+            width: 100%;
         }
     }
     .option_fun {

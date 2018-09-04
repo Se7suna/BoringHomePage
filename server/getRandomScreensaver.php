@@ -10,6 +10,7 @@ require("./connectMySQL.php");
 
 $pageSize = 10;
 $pageNum = 1;
+$pageTotal = 0; // 总页数
 
 /**
  * 分页的函数 */
@@ -26,7 +27,6 @@ function newPaging($pageNum, $pageSize)
   while ($obj = mysqli_fetch_object($check_query)) {
     $array[] = $obj;
   }
-  mysqli_close($conn);
   return $array;
 }
 
@@ -37,27 +37,34 @@ if(isset($_GET['pageNum'])){
   $pageNum = $_GET['pageNum'];
 }
 
-echo json_encode(array(
-  'resCode'=>0,
-  'resData'=>newPaging($pageNum, $pageSize),
-  'resInfo'=>'成功: 获得数据!'
-), JSON_UNESCAPED_UNICODE);
-// mysqli_close($conn);
-exit;
-// 查询一个背景图
+//显示出总页数
+$sql2 = "select count(*) num from background";  // 返回表的纪录数
+$check_query2 = mysqli_query($conn, $sql2);
+$obj = mysqli_fetch_object($check_query2);
+$pageTotal = $obj->num;
 
-
-// {
-//   resCode: 1, 
-//   resData: {
-//     dataSize : 10,
-//     dataNum : 1,
-//     dataTotal : 100,
-//     dataList :[{
-    // bgSrc: 'https://rabc2.iteye.com/i/media/v1/0f000nTw6TryU7IXpq-Cqs.jpg',
-    // bgName: '图片名,图片标题,可以用,可以不用',
-    // bgDesc: '图片说明,图片详情,图片介绍,这是某某国家某某地区, 很丑的一个公考拉',
-    // bgStar: 1,}]
-//   },
-//   resInfo:'获取数据成功'
-// }
+$result = newPaging($pageNum, $pageSize);
+if(count($result)){
+  echo json_encode(array(
+    'resCode'=>1,
+    'resData'=>array(
+      'dataSize' => $pageSize,
+      'dataNum' => $pageNum,
+      'dataTotal' => $pageTotal,
+      'dataList' => newPaging($pageNum, $pageSize)
+    ),
+    'resInfo'=>'成功: 获得数据!'
+  ), JSON_UNESCAPED_UNICODE);
+  mysqli_close($conn);
+  exit;
+}else{
+  echo json_encode(array(
+    'resCode'=>0,
+    'resData'=>array(
+      
+    ),
+    'resInfo'=>'错误：数据获取失败, 请稍后重试或联系管理员!'
+  ), JSON_UNESCAPED_UNICODE);
+  mysqli_close($conn);
+  exit;
+}

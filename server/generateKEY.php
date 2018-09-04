@@ -20,14 +20,41 @@ if(!isset($_GET['userId'])){
 }
 
 $userId = $_GET['userId'];
+$groupName = '';
 $hash = md5(uniqid(microtime(true),true));
-$sql = "INSERT INTO user (id,userId,userAvatar,userName,userPass)VALUES('$time', '$time', '$userAvatar', '$userName','$userPass')";
-if(true){
+
+if(isset($_GET['groupName'])){
+  $groupName = $_GET['groupName'];
+}
+
+// 查询用户名是否存在
+$check_query_user = mysqli_query($conn , "select * from user where userId='$userId' limit 1");
+if (!$check_query_user) {
+  printf("Error: %s\n", mysqli_error($conn));
+  exit();
+}
+if(!mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
+  echo json_encode(array(
+    'resCode'=>0,
+    'resData'=>array(
+      
+    ),
+    'resInfo'=>'错误：不存在此用户。'
+  ), JSON_UNESCAPED_UNICODE);
+  mysqli_close($conn);
+  exit;
+}
+
+// 创建群组
+$sql = "INSERT INTO `group` (groupId,groupName,groupLord) VALUES ('$hash', '$groupName', '$userId')";
+if(mysqli_query($conn, $sql)){
   echo json_encode(array(
     'resCode'=>1,
     'resData'=> array(
       'hash' => $hash,
-      'userId' => $userId
+      'groupId' => $hash,
+      'groupLord' => $userId,
+      'groupName' => $groupName,
     ),
     'resInfo'=>'成功: 创建成功!'
   ), JSON_UNESCAPED_UNICODE);

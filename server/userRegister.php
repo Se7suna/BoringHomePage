@@ -50,12 +50,11 @@ if(mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
 
 // 添加用户
 $time = time();
-$sql = "INSERT INTO user(id,userId,userAvatar,userName,userPass)VALUES('$time', '$time', '$userAvatar', '$userName','$userPass')";
+$sql = "INSERT INTO `user` (userId,userAvatar,userName,userPass) VALUES ('$time', '$userAvatar', '$userName','$userPass')";
 if(mysqli_query($conn, $sql)){
   echo json_encode(array(
     'resCode'=>1,
     'resData'=>array(
-      "id"=> $time,
       "userId"=> $time , // 用户id
       "userAvatar"=> $userAvatar ,// 用户头像
       "userName"=> $userName,   // 用户名

@@ -170,9 +170,12 @@
             font-weight: 800;
         }
         .el-tab-pane {
-            padding: 5% 6.5%;
+            padding: 5% 6.5% 0;
             height: 100%;
             overflow: auto;
+            ul {
+                padding-bottom: 8vh;
+            }
         }
 
     }
@@ -198,14 +201,14 @@
             font-size: 22px;
             font-weight: 800;
         }
-        padding-bottom: 6%;
+        // padding-bottom: 6%;
     }
     .option_btn {
         display: flex;
         justify-content: center;
         position: absolute;
         width: 100%;
-        height: 8%;
+        height: 8vh;
         bottom: 0;
         left: 0;
         text-align: center;

@@ -1,3 +1,4 @@
+export const RECEIVE_USER = 'receive_user';
 export const RECEIVE_LOGIN = 'receive_login';
 export const RECEIVE_SAVELIST = 'receive_savelist';
 export const RECEIVE_ADDITEM = 'receive_additem';

@@ -15,7 +15,7 @@
             v-model="form.linkName"
             auto-complete="off"/>
         </el-form-item>
-        <el-form-item label="链接地址">
+        <el-form-item label="链接地址(必填)">
           <el-input
             v-model="form.linkToSrc"
             auto-complete="off"/>
@@ -25,7 +25,7 @@
         slot="footer"
         class="dialog-footer">
         <el-button
-          :disabled="!form.linkIco.trim() || !form.linkName.trim() || !form.linkToSrc.trim()"
+          :disabled="!form.linkToSrc.trim()"
           type="primary"
           @click="pushGroup()">保存</el-button>
         <el-button @click="esc()">取 消</el-button>
@@ -64,15 +64,22 @@ export default {
         linkName: this.form.linkName.trim(),
         linkToSrc: this.form.linkToSrc.trim(),
       };
-      this.$store.dispatch('pushGroup', data);
-      this.$message({
-        message: '提交成功 !',
-        type: 'success',
+      this.$store.dispatch('pushGroup', data).then(resolve => {
+        if (resolve) {
+          this.$message({
+            message: '提交成功 !',
+            type: 'success',
+          });
+          this.esc();
+        } else {
+          this.$message({
+            message: '提交失败, 请重试 !',
+            type: 'error',
+          });
+        }
+      }).catch(reject => {
+        console.log(reject);
       });
-      this.form.linkIco = '';
-      this.form.linkName = '';
-      this.form.linkToSrc = '';
-      this.dialogFormVisible = false;
     },
   },
 };

@@ -188,10 +188,20 @@ export default {
         const data = {
           userId: this.$store.state.user.userId,
         };
-        this.$store.dispatch('quitGroup', data);
-        this.$message({
-          type: 'success',
-          message: '退出成功!',
+        this.$store.dispatch('quitGroup', data).then(resolve => {
+          if (resolve) {
+            this.$message({
+              type: 'success',
+              message: '退出成功!',
+            });
+          } else {
+            this.$message({
+              message: '退出失败, 请重试 !',
+              type: 'error',
+            });
+          }
+        }).catch(reject => {
+          console.log(reject);
         });
       }).catch(() => {
         this.$message({
@@ -204,7 +214,21 @@ export default {
       const data = {
         userId: this.$store.state.user.userId,
       };
-      this.$store.dispatch('newGroup', data);
+      this.$store.dispatch('newGroup', data).then(resolve => {
+        if (resolve) {
+          this.$message({
+            type: 'success',
+            message: '创建成功 !',
+          });
+        } else {
+          this.$message({
+            message: '创建失败, 请重试 !',
+            type: 'error',
+          });
+        }
+      }).catch(reject => {
+        console.log(reject);
+      });
     },
     joinGroup() {
       this.$prompt('请输入群组6位数字邀请key', '提示', {
@@ -217,10 +241,20 @@ export default {
           userId: this.$store.state.user.userId,
           key: value,
         };
-        this.$store.dispatch('joinGroup', data);
-        this.$message({
-          type: 'success',
-          message: `加入${value}成功!`,
+        this.$store.dispatch('joinGroup', data).then(resolve => {
+          if (resolve) {
+            this.$message({
+              type: 'success',
+              message: `加入${value}成功!`,
+            });
+          } else {
+            this.$message({
+              message: '加入失败, 请确认key !',
+              type: 'error',
+            });
+          }
+        }).catch(reject => {
+          console.log(reject);
         });
       }).catch(() => {
         this.$message({
@@ -237,7 +271,21 @@ export default {
         userId: this.$store.state.user.userId,
         linkId,
       };
-      this.$store.dispatch('agree', data);
+      this.$store.dispatch('agree', data).then(resolve => {
+        if (resolve) {
+          this.$message({
+            type: 'success',
+            message: '已接受 !',
+          });
+        } else {
+          this.$message({
+            message: '接受失败, 请重试 !',
+            type: 'error',
+          });
+        }
+      }).catch(reject => {
+        console.log(reject);
+      });
     },
     reject(linkId) {
       this.$confirm('确认拒绝该请求?', '提示', {
@@ -249,11 +297,22 @@ export default {
           userId: this.$store.state.user.userId,
           linkId,
         };
-        this.$store.dispatch('reject', data);
-        this.$message({
-          type: 'success',
-          message: '已拒绝该请求 !',
+        this.$store.dispatch('reject', data).then(resolve => {
+          if (resolve) {
+            this.$message({
+              type: 'success',
+              message: '已拒绝该请求 !',
+            });
+          } else {
+            this.$message({
+              message: '操作失败, 请重试 !',
+              type: 'error',
+            });
+          }
+        }).catch(reject => {
+          console.log(reject);
         });
+
       }).catch(() => {
         this.$message({
           type: 'info',

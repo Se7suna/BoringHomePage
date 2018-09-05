@@ -18,7 +18,7 @@
 <script>
 import Page from './views/Page/Page.vue';
 import Option from './views/Option/Option.vue';
-import {reqBgImg, reqUser} from './api';
+import {reqBgImg} from './api';
 export default {
   components: {
     Page,
@@ -38,7 +38,7 @@ export default {
     changeBg() {
       if (this.bgNum + 2 === this.bgList.length) {
         console.log('1');
-        reqBgImg('/getRandomScreensaver.php').then(res => {
+        reqBgImg().then(res => {
           if (res.resCode === 1) {
             for (let i of res.resData.dataList) {
               this.bgList.push(i);
@@ -52,23 +52,30 @@ export default {
     },
   },
   mounted() {
-    reqBgImg('/getRandomScreensaver.php').then(res => {
-      if (res.resCode === 1) {
-        this.bgList = res.resData.dataList;
+    reqBgImg().then(resolve => {
+      if (resolve.resCode === 1) {
+        this.bgList = this.$store.state.saveList;
       } else {
-        console.log('获取背景图失败');
+        console.log('获取背景图失败, 请联系开发人员 !');
       }
+    }).catch(reject => {
+      console.log(reject);
     });
     if (window.localStorage.boring) {
       const user = JSON.parse(window.localStorage.boring);
-      const URL = '/usersLogin.php';
-      reqUser(URL, user).then(res => {
-        if (res.resCode === 1) {
-          this.$store.state.user = res.resData;
-          this.$store.dispatch('getSaveList', {userId: res.resData.userId});
-        } else {
-          window.localStorage.boring = '';
+      this.$store.dispatch('getUser', user).then(resolve => {
+        if (resolve) {
+          const data = {userId: this.$store.state.user.userId};
+          this.$store.dispatch('getSaveList', data).then(resolve => {
+            if (!resolve) {
+              window.localStorage.boring = '';
+            }
+          }).catch(reject => {
+            console.log(reject);
+          });
         }
+      }).catch(reject => {
+        console.log(reject);
       });
     }
   },

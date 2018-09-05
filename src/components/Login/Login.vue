@@ -41,7 +41,6 @@
   </div>
 </template>
 <script>
-import {reqUser} from '../../api';
 export default {
   computed: {
     userExp() {
@@ -96,21 +95,29 @@ export default {
       this.dialogFormVisible = false;
     },
     login() {
-      const URL = '/usersLogin.php';
       const data = {
         useName: this.ruleForm2.useName.trim(),
         usePass: this.ruleForm2.usePass.trim(),
       };
-      reqUser(URL, data).then(res => {
-        if (res.resCode === 1) {
-          this.$store.state.user = res.resData;
-          this.$store.dispatch('getSaveList', {userId: res.resData.userId});
-          window.localStorage.boring = JSON.stringify({useName: res.resData.userId, usePass: res.resData.userId});
+      const user = this.$store.state.user;
+      this.$store.dispatch('getUser', data).then(resolve => {
+        if (resolve) {
+          const data = {userId: user.userId};
+          this.$store.dispatch('getSaveList', data).then(resolve => {
+            if (!resolve) {
+              console.log('获取收藏夹失败, 请联系开发人员 !');
+            }
+          }).catch(reject => {
+            console.log(reject);
+          });
+          window.localStorage.boring = JSON.stringify({useName: user.useName, usePass: user.userPass});
           this.dialogFormVisible = false;
         } else {
           this.$message.error('用户名已存在/密码不正确,请重新输入!');
           this.$refs.userName.focus();
         }
+      }).catch(reject => {
+        console.log(reject);
       });
     },
   },

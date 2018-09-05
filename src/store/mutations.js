@@ -1,4 +1,5 @@
 import {
+  RECEIVE_USER,
   RECEIVE_SAVELIST,
   RECEIVE_ADDITEM,
   RECEIVE_UPDATEITEM,
@@ -10,6 +11,9 @@ import {
   LOGOUT,
 } from './mutation-types.js';
 export default {
+  [RECEIVE_USER](state, user) {
+    state.user = user;
+  },
   [RECEIVE_SAVELIST](state, list) {
     state.saveList = list;
   },

@@ -1,4 +1,5 @@
 import {
+  RECEIVE_USER,
   RECEIVE_SAVELIST,
   RECEIVE_ADDITEM,
   RECEIVE_UPDATEITEM,
@@ -10,6 +11,7 @@ import {
   LOGOUT,
 } from './mutation-types.js';
 import {
+  reqUser,
   reqSaveList,
   reqAddItem,
   reqUpdateItem,
@@ -22,103 +24,64 @@ import {
   reqReject,
 } from '../api';
 export default {
+  async getUser({commit}, data) {
+    const result = await reqUser(data);
+    commit(RECEIVE_USER, result.resData);
+    return result.resCode;
+  },
   async getSaveList({commit}, data) {
-    const URL = '/getFavoriteLinks.php';
-    const result = await reqSaveList(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_SAVELIST, result.resData);
-    } else {
-      console.log('获取失败');
-    }
+    const result = await reqSaveList(data);
+    commit(RECEIVE_SAVELIST, result.resData);
+    return result.resCode;
   },
   async addItem({commit}, data) {
-    const URL = '/saveFavoriteLinks.php';
-    const result = await reqAddItem(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_ADDITEM, result.resData);
-    } else {
-      console.log('添加失败');
-    }
+    const result = await reqAddItem(data);
+    commit(RECEIVE_ADDITEM, result.resData);
+    return result.resCode;
   },
   async updateLink({commit}, data) {
-    const URL = '/updateFavoriteLinks.php';
-    const result = await reqUpdateItem(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_UPDATEITEM, result.resData);
-    } else {
-      console.log('修改失败');
-    }
+    const result = await reqUpdateItem(data);
+    commit(RECEIVE_UPDATEITEM, result.resData);
+    return result.resCode;
   },
   async deleteItem({commit}, data) {
-    const URL = '';
-    const result = await reqDeleteItem(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_DELETEITEM, result.resData);
-    } else {
-      console.log('删除失败');
-    }
+    const result = await reqDeleteItem(data);
+    commit(RECEIVE_DELETEITEM, result.resData);
+    return result.resCode;
   },
   logOut({commit}) {
     window.localStorage.boring = '';
     commit(LOGOUT);
   },
   async quitGroup({commit}, data) {
-    const URL = '/clearKEY.php';
-    const result = await reqQuitGroup(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_QUITGROUP, result.resData);
-    } else {
-      console.log('退出失败');
-    }
+    const result = await reqQuitGroup(data);
+    commit(RECEIVE_QUITGROUP, result.resData);
+    return result.resCode;
   },
   async newGroup({dispatch, commit}, data) {
-    const URL = '/generateKEY.php';
-    const result = await reqNewGroup(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_NEWGROUP, result.resData);
-      dispatch('getSaveList', {userId: result.resData.userId});
-    } else {
-      console.log('创建失败');
-    }
+    const result = await reqNewGroup(data);
+    commit(RECEIVE_NEWGROUP, result.resData);
+    dispatch('getSaveList', {userId: result.resData.userId});
+    return result.resCode;
   },
   async joinGroup({dispatch, commit}, data) {
-    const URL = '/submitKEY.php';
-    const result = await reqJoinGroup(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_JOINGROUP, result.resData);
-      dispatch('getSaveList', {userId: result.resData.userId});
-    } else {
-      console.log('加入失败');
-    }
+    const result = await reqJoinGroup(data);
+    commit(RECEIVE_JOINGROUP, result.resData);
+    dispatch('getSaveList', {userId: result.resData.userId});
+    return result.resCode;
   },
-  async pushGroup({commit}, data) {
-    const URL = '/addLinkOfGroup.php';
-    const result = await reqPushGroup(URL, data);
-    if (result.resCode === 1) {
-      console.log('推送成功');
-    } else {
-      console.log('推送失败');
-      commit();
-    }
+  async pushGroup(context, data) {
+    const result = await reqPushGroup(data);
+    return result.resCode;
   },
   async agree({commit}, data) {
-    const URL = '/agree.php';
-    const result = await reqAgree(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_HANDLEPUSH, result.linkId);
-      console.log('已同意,但是后台没做');
-    } else {
-      console.log('同意失败');
-    }
+    const result = await reqAgree(data);
+    commit(RECEIVE_HANDLEPUSH, result.linkId);
+    return result.resCode;
   },
   async reject({commit}, data) {
-    const URL = '/reject.php';
-    const result = await reqReject(URL, data);
-    if (result.resCode === 1) {
-      commit(RECEIVE_HANDLEPUSH, result.linkId);
-      console.log('已拒绝,但是后台没做');
-    } else {
-      console.log('拒绝失败');
-    }
+    const result = await reqReject(data);
+    commit(RECEIVE_HANDLEPUSH, result.linkId);
+    return result.resCode;
   },
 };

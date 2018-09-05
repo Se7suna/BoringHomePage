@@ -26,13 +26,13 @@
         class="dialog-footer">
         <el-button
           v-if="linkId"
-          type="primary"
           :disabled="!form.linkToSrc"
+          type="primary"
           @click="updataLink()">更新</el-button>
         <el-button
           v-else
-          type="primary"
           :disabled="!form.linkToSrc"
+          type="primary"
           @click="pushLink()">保存</el-button>
         <el-button
           v-if="linkId"
@@ -85,12 +85,20 @@ export default {
         linkToSrc: this.form.linkToSrc.trim(),
         userId: this.$store.state.user.userId,
       };
-      this.$store.dispatch('addItem', data);
-      this.$message({
-        message: '添加成功 !',
-        type: 'success',
+      this.$store.dispatch('addItem', data).then(resolve => {
+        if (resolve) {
+          this.$message({
+            message: '添加成功 !',
+            type: 'success',
+          });
+          this.esc();
+        } else {
+          this.$message({
+            message: '添加失败, 请重试 !',
+            type: 'error',
+          });
+        }
       });
-      this.dialogFormVisible = false;
     },
     updataLink() {
       const data = {
@@ -99,12 +107,22 @@ export default {
         linkToSrc: this.form.linkToSrc.trim(),
         linkName: this.form.linkName.trim(),
       };
-      this.$store.dispatch('updateLink', data);
-      this.$message({
-        message: '更新成功!',
-        type: 'success',
+      this.$store.dispatch('updateLink', data).then(resolve => {
+        if (resolve) {
+          this.$message({
+            message: '更新成功!',
+            type: 'success',
+          });
+          this.esc();
+        } else {
+          this.$message({
+            message: '更新失败, 请重试 !',
+            type: 'error',
+          });
+        }
+      }).catch(reject => {
+        console.log(reject);
       });
-      this.esc();
     },
     deleteLink() {
       this.$confirm('此操作将删除该链接, 是否继续?', '警告', {
@@ -112,12 +130,25 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        const data = {};
-        this.$store.dispatch('deleteItem', data);
-        this.esc();
-        this.$message({
-          type: 'success',
-          message: '删除成功 !',
+        const data = {
+          userId: this.$store.state.user.userId,
+          linkId: this.linkId,
+        };
+        this.$store.dispatch('deleteItem', data).then(resolve => {
+          if (resolve) {
+            this.$message({
+              type: 'success',
+              message: '删除成功 !',
+            });
+            this.esc();
+          } else {
+            this.$message({
+              message: '删除失败, 请重试 !',
+              type: 'error',
+            });
+          }
+        }).catch(reject => {
+          console.log(reject);
         });
       }).catch(() => {
         this.$message({

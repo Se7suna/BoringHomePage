@@ -15,7 +15,7 @@
             v-model="form.linkName"
             auto-complete="off"/>
         </el-form-item>
-        <el-form-item label="链接地址">
+        <el-form-item label="链接地址(必填)">
           <el-input
             v-model="form.linkToSrc"
             auto-complete="off"/>
@@ -27,10 +27,12 @@
         <el-button
           v-if="linkId"
           type="primary"
+          :disabled="!form.linkToSrc"
           @click="updataLink()">更新</el-button>
         <el-button
           v-else
           type="primary"
+          :disabled="!form.linkToSrc"
           @click="pushLink()">保存</el-button>
         <el-button
           v-if="linkId"

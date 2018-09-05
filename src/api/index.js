@@ -1,0 +1,13 @@
+import ajax from './ajax';
+export const reqBgImg = url => ajax(url);
+export const reqUser = (url, data) => ajax(url, data);
+export const reqSaveList = (url, data) => ajax(url, data);
+export const reqAddItem = (url, data) => ajax(url, data);
+export const reqUpdateItem = (url, data) => ajax(url, data);
+export const reqDeleteItem = (url, data) => ajax(url, data);
+export const reqQuitGroup = (url, data) => ajax(url, data);
+export const reqNewGroup = (url, data) => ajax(url, data);
+export const reqJoinGroup = (url, data) => ajax(url, data);
+export const reqPushGroup = (url, data) => ajax(url, data);
+export const reqAgree = (url, data) => ajax(url, data);
+export const reqReject = (url, data) => ajax(url, data);

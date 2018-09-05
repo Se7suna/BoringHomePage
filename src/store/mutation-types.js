@@ -1,0 +1,10 @@
+export const RECEIVE_LOGIN = 'receive_login';
+export const RECEIVE_SAVELIST = 'receive_savelist';
+export const RECEIVE_ADDITEM = 'receive_additem';
+export const RECEIVE_UPDATEITEM = 'receive_updateitem';
+export const RECEIVE_DELETEITEM = 'receive_deleteitem';
+export const RECEIVE_QUITGROUP = 'receive_quitgroup';
+export const RECEIVE_NEWGROUP = 'receive_newgroup';
+export const RECEIVE_JOINGROUP = 'receive_joingroup';
+export const RECEIVE_HANDLEPUSH = 'RECEIVE_handlePUSH';
+export const LOGOUT = 'logout';

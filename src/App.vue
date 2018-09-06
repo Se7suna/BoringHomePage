@@ -54,7 +54,7 @@ export default {
   mounted() {
     reqBgImg().then(resolve => {
       if (resolve.resCode === 1) {
-        this.bgList = this.$store.state.saveList;
+        this.bgList = resolve.resData.dataList;
       } else {
         console.log('获取背景图失败, 请联系开发人员 !');
       }

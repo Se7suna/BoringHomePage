@@ -121,7 +121,7 @@ export default {
           });
         }
       }).catch(reject => {
-        console.log(reject);
+        console.log('后端还没写该接口', reject);
       });
     },
     deleteLink() {
@@ -148,7 +148,7 @@ export default {
             });
           }
         }).catch(reject => {
-          console.log(reject);
+          console.log('后端还没写该接口', reject);
         });
       }).catch(() => {
         this.$message({

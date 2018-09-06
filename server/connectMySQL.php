@@ -7,9 +7,10 @@
  */
 // header('Content-type:text/json');     //这句是重点，它告诉接收数据的对象此页面输出的是json数据；
 
-$servername = "localhost";
+$servername = "47.106.86.139";
 $username = "root";
-$password = "";
+// $password = ""; // 本地
+$password = "168168"; // 147 服务器
 
 // 创建数据库连接
 $conn = new mysqli($servername, $username, $password);
@@ -28,5 +29,5 @@ if ($conn->connect_error) {
       
     ),
     'resInfo'=>"连接失败: " . $conn->connect_error
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
 } 

@@ -14,7 +14,7 @@ if(!isset($_GET['userName'])){
       
     ),
     'resInfo'=>"错误: 请输入用户名"
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -43,7 +43,7 @@ if(mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
       
     ),
     'resInfo'=>'错误：用户名 ' . $userName . ' 已存在。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -61,7 +61,7 @@ if(mysqli_query($conn, $sql)){
       "userPass"=> $userPass // 密码
     ),
     'resInfo'=>'成功: 用户注册成功！'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 } else {
@@ -71,7 +71,7 @@ if(mysqli_query($conn, $sql)){
       
     ),
     'resInfo'=>'错误：用户名注册失败, 请稍后重试或联系管理员!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }

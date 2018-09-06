@@ -14,7 +14,7 @@ if(!isset($_GET['userName'])){
       
     ),
     'resInfo'=>"错误: 请输入用户名"
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -40,7 +40,7 @@ if(!mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
       
     ),
     'resInfo'=>'错误：用户名 ' . $userName . ' 不存在。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -57,7 +57,7 @@ if($rows){
       'userName' => $rows['userName']
     ),
     'resInfo'=>'成功：用户名 ' . $userName . ' 登录成功。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }else{
@@ -67,7 +67,7 @@ if($rows){
       
     ),
     'resInfo'=>'错误：用户名 ' . $userName . ' 与登录密码不匹配。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }

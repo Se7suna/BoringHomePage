@@ -14,7 +14,7 @@ if(!isset($_GET['userId'])){
       
     ),
     'resInfo'=>"错误: 缺失参数 userId"
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -40,7 +40,7 @@ if(!mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
       
     ),
     'resInfo'=>'错误：不存在此用户。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -57,7 +57,7 @@ if(mysqli_query($conn, $sql)){
       'groupName' => $groupName,
     ),
     'resInfo'=>'成功: 创建成功!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }else{
@@ -67,7 +67,7 @@ if(mysqli_query($conn, $sql)){
       
     ),
     'resInfo'=>'错误：群组创建失败, 请稍后重试或联系管理员!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }

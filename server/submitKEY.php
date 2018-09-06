@@ -14,7 +14,7 @@ if(!isset($_GET['userId'])){
       
     ),
     'resInfo'=>"错误: 缺失参数 userId"
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -26,7 +26,7 @@ if(!isset($_GET['hash'])){
       
     ),
     'resInfo'=>"错误: 缺失参数 hash"
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -47,7 +47,7 @@ if(!mysqli_fetch_array($check_query_group, MYSQLI_ASSOC)){
       
     ),
     'resInfo'=>'错误：不存在此群组。'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -65,7 +65,7 @@ if(mysqli_fetch_array($check_query_group2)){
       
     ),
     'resInfo'=>'提示: 该用户已在组中!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
@@ -80,7 +80,7 @@ if(mysqli_query($conn, $sql)){
       'groupId' => $groupId,
     ),
     'resInfo'=>'成功: 加入成功!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }else{
@@ -90,7 +90,7 @@ if(mysqli_query($conn, $sql)){
       
     ),
     'resInfo'=>'错误：加入失败, 请稍后重试或联系管理员!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }

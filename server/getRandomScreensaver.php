@@ -54,7 +54,7 @@ if(count($result)){
       'dataList' => newPaging($pageNum, $pageSize)
     ),
     'resInfo'=>'成功: 获得数据!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }else{
@@ -64,7 +64,7 @@ if(count($result)){
       
     ),
     'resInfo'=>'错误：数据获取失败, 请稍后重试或联系管理员!'
-  ), JSON_UNESCAPED_UNICODE);
+  ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }

@@ -1,6 +1,7 @@
 <?php
 /**
  * 用户创建群组
+ * TODO 本文件是否需要改名为 : createGroup
  * @authors qgp/Plq (773561801@qq.com)
  * @date    2018-08-31 11:59:28
  * @version 1.0.0
@@ -46,8 +47,9 @@ if(!mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
 }
 
 // 创建群组
-$sql = "INSERT INTO `group` (groupId,groupName,groupLord) VALUES ('$hash', '$groupName', '$userId')";
-if(mysqli_query($conn, $sql)){
+$sql = "INSERT INTO `group` (groupId ,groupName, groupLord) VALUES ('$hash', '$groupName', '$userId')"; // 添加到 group 列表
+$sql2 = "INSERT INTO `userofgroup` (groupId, groupName, userId, groupLord) VALUES ('$hash', '$groupName', '$userId', '$userId')"; // 添加到 userofgroup 列表
+if(mysqli_query($conn, $sql) && mysqli_query($conn, $sql2)){
   echo json_encode(array(
     'resCode'=>1,
     'resData'=> array(

@@ -45,7 +45,6 @@ if(!mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
   exit;
 }
 
-  
 // 密码与账户是否匹配 
 $rows = mysqli_fetch_assoc($check_query_pass);
 if($rows){

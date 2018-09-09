@@ -8,13 +8,13 @@
 // header('Content-type:text/json');     //这句是重点，它告诉接收数据的对象此页面输出的是json数据；
 header('Access-Control-Allow-Origin:*'); // 跨域
 
-$servername = "localhost";
-$username = "root";
-$password = ""; // 本地 服务器
-
-// $servername = "47.106.86.139";
+// $servername = "localhost";
 // $username = "root";
-// $password = "168168"; // 147 服务器
+// $password = ""; // 本地 服务器
+
+$servername = "47.106.86.139";
+$username = "root";
+$password = "168168"; // 147 服务器
 
 // 创建数据库连接
 $conn = new mysqli($servername, $username, $password);

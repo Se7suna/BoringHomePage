@@ -1,0 +1,22 @@
+{
+  "userRegister": [
+    {
+      "resCode": 1,
+      "resData": {
+        "userId": 1536418392,
+        "userAvatar": "",
+        "userName": "qgp",
+        "userPass": "123456"
+      },
+      "resInfo": "成功: 用户注册成功！"
+    }
+  ],
+  "_userRegister": {
+    "description": "暂不支持自主上传",
+    "method": "POST",
+    "request": {
+      "userName": "qgp",
+      "userPass": 123456
+    }
+  }
+}

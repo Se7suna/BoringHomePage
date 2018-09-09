@@ -1,0 +1,21 @@
+{
+  "userLogin": [
+    {
+      "resCode": 1,
+      "resData": {
+        "userId": "1536418392",
+        "userAvatar": "",
+        "userName": "qgp"
+      },
+      "resInfo": "成功：用户名 qgp 登录成功。"
+    }
+  ],
+  "_userLogin": {
+    "description": "目前密码是非必填",
+    "method": "GET",
+    "request": {
+      "userName": "qgp",
+      "userPass": 123456
+    }
+  }
+}

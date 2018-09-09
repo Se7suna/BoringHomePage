@@ -1,0 +1,27 @@
+{
+  "name": "easy-doc",
+  "version": "0.1.0",
+  "description": "Generate doc, test, mock data in 1-click.",
+  "main": "do-test.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "handlebars": "^4.0.12",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "node json2doc.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meathill/easy-doc.git"
+  },
+  "keywords": [],
+  "author": "Meathill <meathill@gmail.com> (http://meathill.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meathill/easy-doc/issues"
+  },
+  "homepage": "https://github.com/meathill/easy-doc#readme"
+}

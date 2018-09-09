@@ -5,7 +5,7 @@
  * @date    2018-08-31 11:59:28
  * @version 1.0.0
  */
-// header('Content-type:text/json');     //这句是重点，它告诉接收数据的对象此页面输出的是json数据；
+header('Content-type:text/json');     // 这句是重点，它告诉接收数据的对象此页面输出的是json数据；
 header('Access-Control-Allow-Origin:*'); // 跨域
 
 // $servername = "localhost";

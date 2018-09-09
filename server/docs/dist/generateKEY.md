@@ -4,13 +4,13 @@
 
 ### 1) 请求地址
 
->http://localhost/me/MYCLOUDSERVERRELATED/118.25.100.119/BoringHomepage/server/api/generateKEY.php
+> /generateKEY.php
 
 ### 2) 调用方式：HTTP post
 
 ### 3) 接口描述：
 
-* 接口描述详情
+* 创建群组
 
 ### 4) 请求参数:
 
@@ -18,8 +18,8 @@
 #### POST参数:
 |字段名称       |字段说明         |类型            |必填            |备注     |
 | -------------|:--------------:|:--------------:|:--------------:| ------:|
-|userId||string|Y|-|
-|groupName||string|N|-|
+|userId|用户id|string|Y|-|
+|groupName|群组名|string|N|-|
 
 
 

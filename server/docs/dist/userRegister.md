@@ -1,33 +1,43 @@
-API document
-============
 
 
-## \# userRegister
+## userRegister
 
-Description : 用户注册,用户名和密码必填但不作额外验证, 用户头像选填,用户头像目前仅支持 http 链接形式的, 暂不支持自主上传
+### 1) 请求地址
 
-Method: POST
+> /userRegister.php
 
-Request:
-```json
+### 2) 调用方式：HTTP post
+
+### 3) 接口描述：
+
+* 用户注册,用户名和密码必填但不作额外验证, 用户头像选填,用户头像目前仅支持 http 链接形式的, 暂不支持自主上传
+
+### 4) 请求参数:
+
+
+#### POST参数:
+|字段名称       |字段说明         |类型            |必填            |备注     |
+| -------------|:--------------:|:--------------:|:--------------:| ------:|
+|userName||string|Y|-|
+|userPass||string|Y|-|
+
+
+
+### 5) 请求返回结果:
+
+```
 {
-  "userName": "qgp",
-  "userPass": 123456
+    "resCode": 0,
+    "resData": [],
+    "resInfo": "错误：用户名 qgp 已存在。"
 }
 ```
 
-Response:
-```json
-[
-  {
-    "resCode": 1,
-    "resData": {
-      "userId": 1536418392,
-      "userAvatar": "",
-      "userName": "qgp",
-      "userPass": "123456"
-    },
-    "resInfo": "成功: 用户注册成功！"
-  }
-]
-```
+
+### 6) 请求返回结果参数说明:
+|字段名称       |字段说明         |类型            |必填            |备注     |
+| -------------|:--------------:|:--------------:|:--------------:| ------:|
+|resCode||string|Y|-|
+|resData||string|Y|-|
+|resInfo||string|Y|-|
+

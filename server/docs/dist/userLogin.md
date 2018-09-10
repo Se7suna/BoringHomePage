@@ -6,7 +6,7 @@
 
 > /userLogin.php
 
-### 2) 调用方式：HTTP get
+### 2) 调用方式：HTTP post
 
 > /userLogin.php?userName=qgp&userPass=123456
 

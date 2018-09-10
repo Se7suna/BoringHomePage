@@ -8,7 +8,7 @@
 
 ### 2) 调用方式：HTTP post
 
-> /userLogin.php?userName=qgp&userPass=123456
+> /userLogin.php?userName=qgp&userPass=123456 
 
 ### 3) 接口描述：
 

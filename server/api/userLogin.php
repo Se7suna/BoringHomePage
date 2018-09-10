@@ -3,11 +3,11 @@
  * 用户登录
  * @authors qgp/Plq (773561801@qq.com)
  * @date    2018-08-31 11:59:28
- * @version 1.0.0
+ * @version 1.0.0 
  */
 require("./connectMySQL.php");
 
-if(!isset($_GET['userName'])){
+if(!isset($_POST['userName'])){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -19,11 +19,11 @@ if(!isset($_GET['userName'])){
   exit;
 }
 
-$userName = $_GET['userName'];
+$userName = $_POST['userName'];
 $userPass = '';
 
-if(isset($_GET['userPass'])){
-  $userPass = $_GET['userPass'];
+if(isset($_POST['userPass'])){
+  $userPass = $_POST['userPass'];
 }
 
 // 查询用户名是否存在

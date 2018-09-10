@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="bgList.length"
-    :style="{backgroundImage: `url(${bgList[bgNum].imgSrc})`}"
+    :style="{backgroundImage: `url(${bgList[bgNum].bgSrc})`}"
     class="app"
     @click.self="optionHidden()">
     <Page/>
@@ -36,9 +36,12 @@ export default {
       this.optionShow = false;
     },
     changeBg() {
+      const data = {
+        pageSize: 10,
+        pageNum: 1,
+      };
       if (this.bgNum + 2 === this.bgList.length) {
-        console.log('1');
-        reqBgImg().then(res => {
+        reqBgImg(data).then(res => {
           if (res.resCode === 1) {
             for (let i of res.resData.dataList) {
               this.bgList.push(i);
@@ -52,7 +55,11 @@ export default {
     },
   },
   mounted() {
-    reqBgImg().then(resolve => {
+    const data = {
+      pageSize: 10,
+      pageNum: 1,
+    };
+    reqBgImg(data).then(resolve => {
       if (resolve.resCode === 1) {
         this.bgList = resolve.resData.dataList;
       } else {
@@ -85,15 +92,20 @@ export default {
     @import "../static/css/reset.css";
     @import "../static/css/swiper.css";
     @import "https://at.alicdn.com/t/font_816720_qcop362k3ec.css";
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
     .app {
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        width: 100vw;
-        height: 100vh;
-        min-width: 1280px;
-        min-height: 720px;
+        width: 100%;
+        height: 100%;
+        min-width: 960px;
+        min-height: 540px;
         background: no-repeat center center;
         background-size: 100% 100%;
     }

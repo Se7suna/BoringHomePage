@@ -96,8 +96,8 @@ export default {
     },
     login() {
       const data = {
-        useName: this.ruleForm2.useName.trim(),
-        usePass: this.ruleForm2.usePass.trim(),
+        userName: this.ruleForm2.useName.trim(),
+        userPass: this.ruleForm2.usePass.trim(),
       };
       const user = this.$store.state.user;
       this.$store.dispatch('getUser', data).then(resolve => {
@@ -105,7 +105,30 @@ export default {
           const data = {userId: user.userId};
           this.$store.dispatch('getSaveList', data).then(resolve => {
             if (!resolve) {
-              console.log('获取收藏夹失败, 请联系开发人员 !');
+              this.$confirm('该用户名不存在, 是否注册?', '提示', {
+                confirmButtonText: '注册',
+                cancelButtonText: '取消',
+                type: 'warning',
+              }).then(() => {
+                this.$store.dispatch('regUser', data).then(resolve => {
+                  if (resolve) {
+                    this.$message({
+                      type: 'success',
+                      message: '删除成功!',
+                    });
+                  } else {
+                    console.log('获取收藏夹失败, 请联系开发人员 !');
+                  }
+                });
+
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消',
+                });
+                this.ruleForm2.useName = '';
+                this.ruleForm2.usePass = '';
+              });
             }
           }).catch(reject => {
             console.log(reject);

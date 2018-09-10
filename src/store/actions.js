@@ -22,11 +22,21 @@ import {
   reqPushGroup,
   reqAgree,
   reqReject,
+  reqRegUser,
 } from '../api';
 export default {
   async getUser({commit}, data) {
     const result = await reqUser(data);
-    commit(RECEIVE_USER, result.resData);
+    if (result.resCode === 1) {
+      commit(RECEIVE_USER, result.resData);
+    }
+    return result.resCode;
+  },
+  async regUser({commit}, data) {
+    const result = reqRegUser(data);
+    if (result.resCode === 1) {
+      commit(RECEIVE_USER, result.resData);
+    }
     return result.resCode;
   },
   async getSaveList({commit}, data) {

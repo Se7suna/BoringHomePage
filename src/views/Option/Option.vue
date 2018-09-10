@@ -239,7 +239,7 @@ export default {
       }).then(({value}) => {
         const data = {
           userId: this.$store.state.user.userId,
-          key: value,
+          hash: value,
         };
         this.$store.dispatch('joinGroup', data).then(resolve => {
           if (resolve) {

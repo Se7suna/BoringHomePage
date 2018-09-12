@@ -6,35 +6,44 @@
  * @version 1.0.0
  */
 require("./connectMySQL.php");
-
-if(!isset($_POST['userName'])){
+$json_data = json_decode(file_get_contents('php://input'));
+// $json_data->shareLinkSrc
+if(!isset($json_data->userName)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
       
     ),
-    'resInfo'=>"错误: 请输入用户名"
+    'resInfo'=>"3" // 错误: 请输入用户名
   ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
 }
 
 $userAvatar = '';
-$userName = $_POST['userName'];
+$userName = $json_data->userName;
 $userPass = '';
 
-if(isset($_POST['userAvatar'])){
-  $userAvatar = $_POST['userAvatar'];
+if(isset($json_data->userAvatar)){
+  $userAvatar = $json_data->userAvatar;
 }
-if(isset($_POST['userPass'])){
-  $userPass = $_POST['userPass'];
+if(isset($json_data->userPass)){
+  $userPass = $json_data->userPass;
 }
 
 // 查询用户名是否存在
 $check_query_user = mysqli_query($conn , "select * from user where userName='$userName' limit 1");
 if (!$check_query_user) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit();
+  // printf("Error: %s\n", mysqli_error($conn));
+  echo json_encode(array(
+    'resCode'=>0,
+    'resData'=>array(
+      
+    ),
+    'resInfo'=>'0' // 服务器异常
+  ),JSON_UNESCAPED_UNICODE );
+  mysqli_close($conn);
+  exit;
 }
 if(mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
   echo json_encode(array(
@@ -42,7 +51,7 @@ if(mysqli_fetch_array($check_query_user, MYSQLI_ASSOC)){
     'resData'=>array(
       
     ),
-    'resInfo'=>'错误：用户名 ' . $userName . ' 已存在。'
+    'resInfo'=>'2' // 错误：用户名 ' . $userName . ' 已存在。
   ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
@@ -60,7 +69,7 @@ if(mysqli_query($conn, $sql)){
       "userName"=> $userName,   // 用户名
       "userPass"=> $userPass // 密码
     ),
-    'resInfo'=>'成功: 用户注册成功！'
+    'resInfo'=>'1' // 成功: 用户注册成功！
   ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
@@ -70,7 +79,7 @@ if(mysqli_query($conn, $sql)){
     'resData'=>array(
       
     ),
-    'resInfo'=>'错误：用户名注册失败, 请稍后重试或联系管理员!'
+    'resInfo'=>'4' // 错误：用户名注册失败, 请稍后重试或联系管理员 !
   ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;

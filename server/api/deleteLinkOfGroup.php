@@ -7,7 +7,7 @@
  */
 require("./connectMySQL.php");
 
-if(!isset($_POST['id'])){
+if(!isset($json_data->id)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -18,7 +18,7 @@ if(!isset($_POST['id'])){
   mysqli_close($conn);
   exit;
 }
-if(!isset($_POST['userId'])){
+if(!isset($json_data->userId)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -30,8 +30,8 @@ if(!isset($_POST['userId'])){
   exit;
 }
 
-$id = $_POST['id'];
-$userId = $_POST['userId'];
+$id = $json_data->id;
+$userId = $json_data->userId;
 
 // 判断是否存在
 $sql1 = "SELECT * FROM linkofgroup WHERE id = '$id' and groupId = '$userId'";

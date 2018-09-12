@@ -6,8 +6,9 @@
  * @version 1.0.0
  */
 require("./connectMySQL.php");
+$json_data = json_decode(file_get_contents('php://input'));
 
-if(!isset($_POST['id'])){
+if(!isset($json_data->id)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -18,7 +19,7 @@ if(!isset($_POST['id'])){
   mysqli_close($conn);
   exit;
 }
-if(!isset($_POST['shareLinkState'])){
+if(!isset($json_data->shareLinkState)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -29,8 +30,8 @@ if(!isset($_POST['shareLinkState'])){
   mysqli_close($conn);
   exit;
 }
-$id = $_POST['id'];
-$shareLinkState = empty($_POST['shareLinkState']) ? 0 : $_POST['shareLinkState']; // 状态,0表示未审核(默认未审核), 1表示审核通过
+$id = $json_data->id;
+$shareLinkState = empty($json_data->shareLinkState) ? 0 : $json_data->shareLinkState; // 状态,0表示未审核(默认未审核), 1表示审核通过
 $sql = "UPDATE linkofgroup SET shareLinkState='$shareLinkState' where id = '$id'";
 
 if(mysqli_query($conn, $sql)){

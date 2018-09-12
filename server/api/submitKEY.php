@@ -7,7 +7,7 @@
  */
 require("./connectMySQL.php");
 
-if(!isset($_POST['userId'])){
+if(!isset($json_data->userId)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -19,7 +19,7 @@ if(!isset($_POST['userId'])){
   exit;
 }
 
-if(!isset($_POST['hash'])){
+if(!isset($json_data->hash)){
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -31,14 +31,22 @@ if(!isset($_POST['hash'])){
   exit;
 }
 
-$userId = $_POST['userId'];
-$groupId = $_POST['hash'];
+$userId = $json_data->userId;
+$groupId = $json_data->hash;
 
 // 查询群组是否存在
 $check_query_group = mysqli_query($conn , "select * from `group` where groupId='$groupId' limit 1");
 if (!$check_query_group) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit();
+  // printf("Error: %s\n", mysqli_error($conn));
+  echo json_encode(array(
+    'resCode'=>0,
+    'resData'=>array(
+      
+    ),
+    'resInfo'=>'错误: 服务器异常, 请稍后重试或联系管理员!' // 服务器异常
+  ),JSON_UNESCAPED_UNICODE );
+  mysqli_close($conn);
+  exit;
 }
 if(!mysqli_fetch_array($check_query_group, MYSQLI_ASSOC)){
   echo json_encode(array(
@@ -55,8 +63,16 @@ if(!mysqli_fetch_array($check_query_group, MYSQLI_ASSOC)){
 // 查询是否已在组中
 $check_query_group2 = mysqli_query($conn , "select * from `userOfGroup` where userId='$userId' and groupId='$groupId'");
 if (!$check_query_group2) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit();
+  // printf("Error: %s\n", mysqli_error($conn));
+  echo json_encode(array(
+    'resCode'=>0,
+    'resData'=>array(
+      
+    ),
+    'resInfo'=>'错误: 服务器异常, 请稍后重试或联系管理员!' // 服务器异常
+  ),JSON_UNESCAPED_UNICODE );
+  mysqli_close($conn);
+  exit;
 }
 if(mysqli_fetch_array($check_query_group2)){
   echo json_encode(array(

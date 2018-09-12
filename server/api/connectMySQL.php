@@ -5,8 +5,14 @@
  * @date    2018-08-31 11:59:28
  * @version 1.0.0
  */
-header('Content-type:text/json');     // 这句是重点，它告诉接收数据的对象此页面输出的是json数据；
+header('Content-type:application/json;charset=utf-8');     // 这句是重点，它告诉接收数据的对象此页面输出的是json数据；
+
 header('Access-Control-Allow-Origin:*'); // 跨域
+// $_SERVER['REQUEST_METHOD'] === "OPTIONS" // 判断请求的 methods
+// header('Access-Control-Allow-Methods:GET, POST, PUT, OPTIONS'); // 请求方式, 如 get post options 等
+// header("Access-Control-Allow-Headers:*");
+// header("Access-Control-Allow-Credentials: true");
+// header("Access-Control-Max-Age: 1728000"); // 用来指定本次预检请求的有效期，单位为秒, 这里是20天
 
 // $servername = "localhost";
 // $username = "root";

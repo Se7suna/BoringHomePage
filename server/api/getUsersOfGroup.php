@@ -21,8 +21,16 @@ function newPaging($pageNum, $pageSize, $groupId)
   $sql = "select * from userofgroup where groupId='$groupId' limit " . (($pageNum - 1) * $pageSize) . "," . $pageSize;
   $check_query = mysqli_query($conn , $sql);
   if (!$check_query) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit();
+    // printf("Error: %s\n", mysqli_error($conn));
+    echo json_encode(array(
+      'resCode'=>0,
+      'resData'=>array(
+        
+      ),
+      'resInfo'=>'错误: 服务器异常, 请稍后重试或联系管理员!' // 服务器异常
+    ),JSON_UNESCAPED_UNICODE );
+    mysqli_close($conn);
+    exit;
   }
   while ($obj = mysqli_fetch_object($check_query)) {
     $array[] = $obj;

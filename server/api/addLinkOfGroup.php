@@ -7,7 +7,7 @@
  */
 require("./connectMySQL.php");
 
-if(!isset($_POST['userId'])){ // 用户
+if(!isset($json_data->userId)){ // 用户
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -19,7 +19,7 @@ if(!isset($_POST['userId'])){ // 用户
   exit;
 }
 
-if(!isset($_POST['groupId'])){ // 群组
+if(!isset($json_data->groupId)){ // 群组
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -31,7 +31,7 @@ if(!isset($_POST['groupId'])){ // 群组
   exit;
 }
 
-if(!isset($_POST['shareLinkSrc'])){ // 分享链接
+if(!isset($json_data->shareLinkSrc)){ // 分享链接
   echo json_encode(array(
     'resCode'=>0,
     'resData'=>array(
@@ -44,20 +44,20 @@ if(!isset($_POST['shareLinkSrc'])){ // 分享链接
 }
 
 $shareLinkName = ''; // 分享的链接名
-if(isset($_POST['shareLinkName'])){
-  $shareLinkName = $_POST['shareLinkName'];
+if(isset($json_data->shareLinkName)){
+  $shareLinkName = $json_data->shareLinkName;
 }
 
 $userName = ''; // 分享者的 name
-if(isset($_POST['userName'])){
-  $userName = $_POST['userName'];
+if(isset($json_data->userName)){
+  $userName = $json_data->userName;
 }
 
 $shareLinkState = 0; // 分享的链接状态
 $shareLinkIcoScr = ''; // 分享链接的图标地址
-$groupId = $_POST['groupId'];
-$userId = $_POST['userId'];
-$shareLinkSrc = $_POST['shareLinkSrc'];
+$groupId = $json_data->groupId;
+$userId = $json_data->userId;
+$shareLinkSrc = $json_data->shareLinkSrc;
 
 $sql = "INSERT INTO `linkofgroup` 
 (groupId,userId,shareLinkSrc,userName,shareLinkIcoScr,shareLinkState,shareLinkName) 

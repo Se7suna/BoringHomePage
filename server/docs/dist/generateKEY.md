@@ -46,7 +46,7 @@
 |resData||string|Y|-|
 |hash||string|Y|-|
 |groupId||string|Y|-|
-|groupLord||string|Y|-|
+|groupLord|群主|string|Y|-|
 |groupName||string|Y|-|
 |resInfo||string|Y|-|
 

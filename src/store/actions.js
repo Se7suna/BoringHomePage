@@ -11,7 +11,7 @@ import {
   LOGOUT,
 } from './mutation-types.js';
 import {
-  reqUser,
+  reqLogin,
   reqSaveList,
   reqAddItem,
   reqUpdateItem,
@@ -26,7 +26,7 @@ import {
 } from '../api';
 export default {
   async getUser({commit}, data) {
-    const result = await reqUser(data);
+    const result = await reqLogin(data);
     if (result.resCode === 1) {
       commit(RECEIVE_USER, result.resData);
     }

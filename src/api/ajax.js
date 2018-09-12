@@ -13,7 +13,13 @@ export default function ajax(data = {}, url, type) {
       }
       promise = axios.get(url);
     } else {
-      promise = axios.post(url, data);
+      // 设置 content-type 解决 options 问题
+      promise = axios({
+        method: 'post',
+        url: url,
+        data: data,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      });
     }
     promise.then(response => {
       resolve(response.data);

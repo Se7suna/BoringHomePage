@@ -1,4 +1,5 @@
 export default {
-  saveList: {},
+  linkList: {},
   user: {},
+  hashList: [],
 };

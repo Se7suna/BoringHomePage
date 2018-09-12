@@ -5,9 +5,9 @@
         label="收藏夹"
         name="first">
         <ul>
-          <template v-if="this.$store.state.saveList">
+          <template v-if="this.$store.state.linkList">
             <li
-              v-for="i of this.$store.state.saveList.dataList"
+              v-for="i of this.$store.state.linkList.dataList"
               :key="i.linkId"
               class="option_item"
               @click="editLink(i.linkId)">
@@ -17,7 +17,7 @@
             </li>
           </template>
           <div
-            v-if="$store.state.user.id"
+            v-if="$store.state.user.userId"
             class="option_add">
             <el-button
               round
@@ -42,7 +42,7 @@
               v-if="!this.$store.state.user.key"
               class="new">
               <el-button
-                :disabled="!$store.state.user.id"
+                :disabled="!$store.state.user.userId"
                 type="primary"
                 @click="newGroup()">创建群组</el-button>
             </div>
@@ -57,7 +57,7 @@
               v-if="!this.$store.state.user.key"
               class="join">
               <el-button
-                :disabled="!$store.state.user.id"
+                :disabled="!$store.state.user.userId"
                 type="primary"
                 @click="joinGroup()">加入群组</el-button>
             </div>
@@ -99,7 +99,7 @@
     </el-tabs>
     <div class="option_btn">
       <el-button
-        v-if="!$store.state.user.id"
+        v-if="!$store.state.user.userId"
         type="success"
         @click="showLogin()">注册 / 登录</el-button>
       <el-button
@@ -130,19 +130,22 @@ export default {
   },
   computed: {
     loginMsg() {
-      const user = this.$store.state.user;
-      if (!user.id) {
+      const state = this.$store.state;
+      if (!state.user.id) {
         return '状态: 未登录, 请登录!';
-      } else {
-        if (user.key) {
-          return `状态: 已加入 ${user.key}`;
-        } else {
-          return '状态: 暂未加入群组';
+      }
+      if (state.hashList.length) {
+        let msg = state.hashList[0];
+        for (let i = 1, len = state.hashList.length; i < len; i++) {
+          msg += ', ' + state.hashList[i];
         }
+        return `当前群组: ${msg}`;
+      } else {
+        return '状态: 暂未加入群组';
       }
     },
     colorShow() {
-      return this.$store.state.user.key;
+      return this.$store.state.hashList.length;
     },
   },
   data() {
@@ -211,10 +214,10 @@ export default {
       });
     },
     newGroup() {
-      const data = {
+      const userId = {
         userId: this.$store.state.user.userId,
       };
-      this.$store.dispatch('newGroup', data).then(resolve => {
+      this.$store.dispatch('newGroup', userId).then(resolve => {
         if (resolve) {
           this.$message({
             type: 'success',
@@ -226,16 +229,14 @@ export default {
             type: 'error',
           });
         }
-      }).catch(reject => {
-        console.log(reject);
       });
     },
     joinGroup() {
-      this.$prompt('请输入群组6位数字邀请key', '提示', {
+      this.$prompt('请输入群组hash', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        inputPattern: /^\d{6,6}$/,
-        inputErrorMessage: 'key格式不正确',
+        inputPattern: /^\w{6,6}$/,
+        inputErrorMessage: 'hash格式不正确',
       }).then(({value}) => {
         const data = {
           userId: this.$store.state.user.userId,
@@ -249,12 +250,10 @@ export default {
             });
           } else {
             this.$message({
-              message: '加入失败, 请确认key !',
+              message: '加入失败, 请确认hash !',
               type: 'error',
             });
           }
-        }).catch(reject => {
-          console.log(reject);
         });
       }).catch(() => {
         this.$message({

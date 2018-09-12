@@ -23,6 +23,7 @@
           label="密码"
           prop="pass">
           <el-input
+            ref="userPass"
             v-model="ruleForm2.userPass"
             type="text"
             auto-complete="off"/>
@@ -94,76 +95,68 @@ export default {
       this.ruleForm2.userPass = '';
       this.dialogFormVisible = false;
     },
-    login() {
-      const data = {
+    async login() {
+      const userData = {
         userName: this.ruleForm2.userName.trim(),
         userPass: this.ruleForm2.userPass.trim(),
       };
-      const user = this.$store.state.user;
       // 发起登录请求
-      this.$store.dispatch('getUser', data).then(resolve => {
-        if (resolve) {
-          const data = {userId: user.userId};
-          // 登录成功, 获取收藏夹
-          this.$store.dispatch('getSaveList', data).then(resolve => {
-            if (!resolve) {
-              // 获取收藏夹失败
-              console.log('获取收藏夹失败, 请联系开发人员 !');
-            }
-          }).catch(reject => {
-            // 获取收藏夹错误
-            console.log(reject);
-          });
-          // 本地缓存账户信息
-          window.localStorage.boring = JSON.stringify({userName: user.userName, userPass: user.userPass});
-          this.dialogFormVisible = false;
-        } else {
-          // 登录失败, 提示是否注册
-          this.$confirm('该用户名不存在, 是否注册?', '提示', {
-            confirmButtonText: '注册',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }).then(() => {
-            // 确认注册
-            console.log(data);
-            this.$store.dispatch('regUser', data).then(resolve => {
-              if (resolve) {
-                // 注册成功
-                this.$message({
-                  type: 'success',
-                  message: '注册成功!',
-                });
-              } else {
-              //  注册失败
-                this.$message({
-                  type: 'error',
-                  message: '注册失败, 用户名已存在!',
-                });
-                // 清空用户名, 重新输入
-                this.ruleForm2.userName = '';
-                this.$refs.userName.focus();
-              }
-            }).catch(reject => {
-              // 注册错误
-              console.log(reject);
-            });
-          }).catch(() => {
-            // 取消注册
-            this.$message({
-              type: 'info',
-              message: '已取消',
-            });
-            this.ruleForm2.userName = '';
-            this.ruleForm2.userPass = '';
-            this.$refs.userName.focus();
-          });
-          // this.$message.error('用户名已存在/密码不正确,请重新输入!');
-          // this.$refs.userName.focus();
+      const state = this.$store.state;
+      const loginInfo = await this.$store.dispatch('userLogin', userData);
+      if (+loginInfo === 1) {
+        // 登录成功, 获取收藏夹
+        const userId = {userId: state.user.userId};
+        const hashRes = await this.$store.dispatch('getHash', userId);
+        if (hashRes) {
+          this.$store.dispatch('getGroupLink', state.hashList);
         }
-      }).catch(reject => {
-        // 登录错误
-        console.log(reject);
-      });
+        // 本地缓存账户信息
+        const lsData = {userName: state.user.userName, userPass: this.ruleForm2.userPass.trim()};
+        window.localStorage.boring = JSON.stringify(lsData);
+        this.dialogFormVisible = false;
+      } else if (+loginInfo === 2) {
+        // 登录失败, 提示是否注册
+        this.$confirm('该用户名不存在, 是否注册?', '提示', {
+          confirmButtonText: '注册',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(() => {
+          // 确认注册
+          this.$store.dispatch('regUser', userData).then(regRes => {
+            if (regRes) {
+              // 注册成功
+              this.$message({
+                type: 'success',
+                message: '注册成功!',
+              });
+              const lsData = {userName: state.user.userName, userPass: this.ruleForm2.userPass.trim()};
+              window.localStorage.boring = JSON.stringify(lsData);
+              this.esc();
+            } else {
+              //  注册失败
+              this.$message({
+                type: 'error',
+                message: '注册失败, 用户名已存在!',
+              });
+              // 清空用户名, 重新输入
+              this.ruleForm2.userName = '';
+              this.$refs.userName.focus();
+            }
+          });
+        }).catch(() => {
+          // 取消注册
+          this.$message({
+            type: 'info',
+            message: '已取消',
+          });
+          this.$refs.userName.focus();
+        });
+
+      } else if (+loginInfo === 4) {
+        this.$message.error('密码不正确,请重新输入!');
+        this.ruleForm2.userPass = '';
+        this.$refs.userPass.focus();
+      }
     },
   },
 };

@@ -33,8 +33,8 @@ export default {
   },
   computed: {
     pageSort() {
-      if (this.$store.state.saveList.dataList) {
-        const list = this.$store.state.saveList.dataList;
+      if (this.$store.state.linkList.dataList) {
+        const list = this.$store.state.linkList.dataList;
         let res = [];
         let item = [];
         for (let i = 0, len = list.length; i < len; i++) {

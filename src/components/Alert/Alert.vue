@@ -28,12 +28,12 @@
           v-if="linkId"
           :disabled="!form.linkToSrc"
           type="primary"
-          @click="updataLink()">更新</el-button>
+          @click="editLink()">更新</el-button>
         <el-button
           v-else
           :disabled="!form.linkToSrc"
           type="primary"
-          @click="pushLink()">保存</el-button>
+          @click="addLink()">保存</el-button>
         <el-button
           v-if="linkId"
           type="danger"
@@ -61,7 +61,7 @@ export default {
       this.dialogFormVisible = true;
       if (linkId) {
         this.linkId = linkId;
-        for (let i of this.$store.state.saveList.dataList) {
+        for (let i of this.$store.state.linkList.dataList) {
           if (i.linkId === linkId) {
             this.form.linkIco = i.linkIco;
             this.form.linkName = i.linkName;
@@ -78,14 +78,14 @@ export default {
       this.dialogFormVisible = false;
       this.linkId = 0;
     },
-    pushLink() {
+    addLink() {
       const data = {
         linkIco: this.form.linkIco.trim(),
         linkName: this.form.linkName.trim(),
         linkToSrc: this.form.linkToSrc.trim(),
         userId: this.$store.state.user.userId,
       };
-      this.$store.dispatch('addItem', data).then(resolve => {
+      this.$store.dispatch('addLink', data).then(resolve => {
         if (resolve) {
           this.$message({
             message: '添加成功 !',
@@ -100,7 +100,7 @@ export default {
         }
       });
     },
-    updataLink() {
+    editLink() {
       const data = {
         linkId: this.linkId,
         linkIco: this.form.linkIco.trim(),

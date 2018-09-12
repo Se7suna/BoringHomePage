@@ -1,27 +1,31 @@
 import {
   RECEIVE_USER,
   RECEIVE_SAVELIST,
-  RECEIVE_ADDITEM,
+  RECEIVE_ADDLINK,
   RECEIVE_UPDATEITEM,
   RECEIVE_DELETEITEM,
   RECEIVE_QUITGROUP,
   RECEIVE_NEWGROUP,
   RECEIVE_JOINGROUP,
   RECEIVE_HANDLEPUSH,
+  RECEIVE_GETHASH,
   LOGOUT,
 } from './mutation-types.js';
 export default {
   [RECEIVE_USER](state, user) {
     state.user = user;
   },
-  [RECEIVE_SAVELIST](state, list) {
-    state.saveList = list;
+  [RECEIVE_SAVELIST](state, resData) {
+    state.linkList = [];
+    for (let i of resData.dataList) {
+      state.linkList.push(i);
+    }
   },
-  [RECEIVE_ADDITEM](state, item) {
-    state.saveList.dataList.push(item);
+  [RECEIVE_ADDLINK](state, item) {
+    state.linkList.dataList.push(item);
   },
   [RECEIVE_UPDATEITEM](state, item) {
-    for (let i of state.saveList.dataList) {
+    for (let i of state.linkList.dataList) {
       if (i.linkId === item.linkId) {
         i.id = item.id;
         i.linkId = item.linkId;
@@ -33,7 +37,7 @@ export default {
     }
   },
   [RECEIVE_DELETEITEM](state, linkId) {
-    const arr = state.saveList.dataList;
+    const arr = state.linkList.dataList;
     for (let i = 0, len = arr.length; i < len; i++) {
       if (arr[i].linkId === linkId) {
         arr.splice(i, 1);
@@ -48,10 +52,10 @@ export default {
     state.user.key = data.key;
   },
   [RECEIVE_NEWGROUP](state, data) {
-    state.user.key = data.key;
+    state.hashList.push(data.groupId);
   },
   [RECEIVE_JOINGROUP](state, data) {
-    state.user.key = data.key;
+    state.hashList.push(data.groupId);
   },
   [RECEIVE_HANDLEPUSH](state, linkId) {
     const arr = state.user.push;
@@ -60,6 +64,11 @@ export default {
         arr.splice(i, 1);
         return;
       }
+    }
+  },
+  [RECEIVE_GETHASH](state, arr) {
+    for (let i of arr) {
+      state.hashList.push(i.groupId);
     }
   },
 };

@@ -54,36 +54,29 @@ export default {
       this.bgNum++;
     },
   },
-  mounted() {
+  async mounted() {
     const data = {
       pageSize: 10,
       pageNum: 1,
     };
-    reqBgImg(data).then(resolve => {
-      if (resolve.resCode === 1) {
-        this.bgList = resolve.resData.dataList;
-      } else {
-        console.log('获取背景图失败, 请联系开发人员 !');
-      }
-    }).catch(reject => {
-      console.log(reject);
-    });
+    const bgRes = await reqBgImg(data);
+    if (bgRes.resCode === 1) {
+      this.bgList = bgRes.resData.dataList;
+    } else {
+      console.log('获取背景图失败, 请联系开发人员 !');
+    }
     if (window.localStorage.boring) {
       const user = JSON.parse(window.localStorage.boring);
-      this.$store.dispatch('getUser', user).then(resolve => {
-        if (resolve) {
-          const data = {userId: this.$store.state.user.userId};
-          this.$store.dispatch('getSaveList', data).then(resolve => {
-            if (!resolve) {
-              window.localStorage.boring = '';
-            }
-          }).catch(reject => {
-            console.log(reject);
-          });
+      const logInfo = await this.$store.dispatch('userLogin', user);
+      if (+logInfo === 1) {
+        const userId = {userId: this.$store.state.user.userId};
+        const hashRes = await this.$store.dispatch('getHash', userId);
+        if (hashRes) {
+          this.$store.dispatch('getGroupLink', this.$store.state.hashList);
         }
-      }).catch(reject => {
-        console.log(reject);
-      });
+      } else if (+logInfo === 4) {
+        window.localStorage.boring = '';
+      }
     }
   },
 };

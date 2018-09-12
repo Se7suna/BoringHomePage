@@ -1,19 +1,20 @@
 import {
   RECEIVE_USER,
   RECEIVE_SAVELIST,
-  RECEIVE_ADDITEM,
+  RECEIVE_ADDLINK,
   RECEIVE_UPDATEITEM,
   RECEIVE_DELETEITEM,
   RECEIVE_QUITGROUP,
   RECEIVE_NEWGROUP,
   RECEIVE_JOINGROUP,
   RECEIVE_HANDLEPUSH,
+  RECEIVE_GETHASH,
   LOGOUT,
 } from './mutation-types.js';
 import {
   reqLogin,
-  reqSaveList,
-  reqAddItem,
+  reqGroupLink,
+  reqAddLink,
   reqUpdateItem,
   reqDeleteItem,
   reqQuitGroup,
@@ -23,30 +24,41 @@ import {
   reqAgree,
   reqReject,
   reqRegUser,
+  reqGetHash,
 } from '../api';
 export default {
-  async getUser({commit}, data) {
+  async userLogin({commit}, data) {
     const result = await reqLogin(data);
-    if (result.resCode === 1) {
+    if (+result.resInfo === 1) {
       commit(RECEIVE_USER, result.resData);
     }
-    return result.resCode;
+    return result.resInfo;
   },
   async regUser({commit}, data) {
-    const result = reqRegUser(data);
+    const result = await reqRegUser(data);
     if (result.resCode === 1) {
       commit(RECEIVE_USER, result.resData);
     }
     return result.resCode;
   },
-  async getSaveList({commit}, data) {
-    const result = await reqSaveList(data);
-    commit(RECEIVE_SAVELIST, result.resData);
+  async getHash({commit}, data) {
+    const result = await reqGetHash(data);
+    if (result.resCode === 1) {
+      commit(RECEIVE_GETHASH, result.resData.dataList);
+    }
     return result.resCode;
   },
-  async addItem({commit}, data) {
-    const result = await reqAddItem(data);
-    commit(RECEIVE_ADDITEM, result.resData);
+  async getGroupLink({commit}, data) {
+    for (let i of data) {
+      const result = await reqGroupLink(i);
+      if (result.resCode === 1) {
+        commit(RECEIVE_SAVELIST, result.resData);
+      }
+    }
+  },
+  async addLink({commit}, data) {
+    const result = await reqAddLink(data);
+    commit(RECEIVE_ADDLINK, result.resData);
     return result.resCode;
   },
   async updateLink({commit}, data) {
@@ -68,16 +80,19 @@ export default {
     commit(RECEIVE_QUITGROUP, result.resData);
     return result.resCode;
   },
-  async newGroup({dispatch, commit}, data) {
+  async newGroup({commit}, data) {
     const result = await reqNewGroup(data);
-    commit(RECEIVE_NEWGROUP, result.resData);
-    dispatch('getSaveList', {userId: result.resData.userId});
+    if (result.resCode === 1) {
+      commit(RECEIVE_NEWGROUP, result.resData);
+    }
     return result.resCode;
   },
-  async joinGroup({dispatch, commit}, data) {
+  async joinGroup({dispatch, state, commit}, data) {
     const result = await reqJoinGroup(data);
-    commit(RECEIVE_JOINGROUP, result.resData);
-    dispatch('getSaveList', {userId: result.resData.userId});
+    if (result.resCode === 1) {
+      commit(RECEIVE_JOINGROUP, result.resData);
+      dispatch('getGroupLink', state.hashList);
+    }
     return result.resCode;
   },
   async pushGroup(context, data) {

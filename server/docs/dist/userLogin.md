@@ -8,7 +8,7 @@
 
 ### 2) 调用方式：HTTP post
 
-> /userLogin.php?userName=qgp&userPass=123456 
+> /userLogin.php
 
 ### 3) 接口描述：
 
@@ -32,7 +32,8 @@
     "resData": {
         "userId": "1536565549",
         "userAvatar": "",
-        "userName": "qgp"
+        "userName": "qgp",
+        "linkOfUser" : []
     },
     "resInfo": "成功：用户名 qgp 登录成功。"
 }
@@ -44,6 +45,7 @@
 | -------------|:--------------:|:--------------:|:--------------:| ------:|
 |resCode||string|Y|-|
 |resData||string|Y|-|
+|linkOfUser||array|Y|-|
 |userId||string|Y|-|
 |userAvatar||string|Y|-|
 |userName||string|Y|-|

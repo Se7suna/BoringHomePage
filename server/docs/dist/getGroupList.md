@@ -54,6 +54,6 @@
 |groupId||string|Y|-|
 |userId||string|Y|-|
 |groupName||string|Y|-|
-|groupLord||string|Y|-|
+|groupLord|群主id|string|Y|-|
 |resInfo||string|Y|-|
 

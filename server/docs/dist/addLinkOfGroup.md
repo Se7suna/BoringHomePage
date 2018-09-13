@@ -34,9 +34,9 @@
         "userId": "10010",
         "shareLinkSrc": "baidu.com",
         "userName": "",
-        "shareLinkIcoScr": "",
+        "shareLinkIcoScr": "http://api.byi.pw/favicon/?url=baidu.com",
         "shareLinkState": 0,
-        "shareLinkName": ""
+        "shareLinkName": "百度一下, 你就知道"
     },
     "resInfo": "成功: 链接提交成功, 等待审核！"
 }

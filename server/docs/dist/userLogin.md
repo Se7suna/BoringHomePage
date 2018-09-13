@@ -22,8 +22,6 @@
 |userName||string|Y|-|
 |userPass||string|N|-|
 
-
-
 ### 5) 请求返回结果:
 
 ```

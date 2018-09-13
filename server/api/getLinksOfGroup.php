@@ -7,7 +7,7 @@
  */
 require("./connectMySQL.php");
 
-$shareLinkState = 1; // 状态,0表示未审核(默认未审核), 1表示审核通过
+$shareLinkState = 0; // 状态,0表示未审核(默认未审核), 1表示审核通过
 $pageSize = 10;
 $pageNum = 1;
 $pageTotal = 0; // 总页数

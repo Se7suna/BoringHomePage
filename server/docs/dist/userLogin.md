@@ -45,7 +45,7 @@
 | -------------|:--------------:|:--------------:|:--------------:| ------:|
 |resCode||string|Y|-|
 |resData||string|Y|-|
-|linkOfUser||array|Y|-|
+|linkOfUser|用户能看的到的所有分享连接|array|Y|-|
 |userId||string|Y|-|
 |userAvatar||string|Y|-|
 |userName||string|Y|-|

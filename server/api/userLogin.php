@@ -112,7 +112,7 @@ function fnGetLinkOfGroup($aUserOfGroup)
   $result = array();
   for($x=0;$x<count($aUserOfGroup);$x++)
   {
-    $sql = "select * from `linkofgroup` where groupId = '$aUserOfGroup[$x]'";
+    $sql = "select * from `linkofgroup` where groupId = '$aUserOfGroup[$x]' and shareLinkState = 1";
     $retval = mysqli_query( $conn, $sql );
     while($row = mysqli_fetch_object($retval))
     {

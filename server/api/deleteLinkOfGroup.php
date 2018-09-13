@@ -6,6 +6,7 @@
  * @version 1.0.0
  */
 require("./connectMySQL.php");
+$json_data = json_decode(file_get_contents('php://input'));
 
 if(!isset($json_data->id)){
   echo json_encode(array(

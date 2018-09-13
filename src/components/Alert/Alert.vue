@@ -3,7 +3,7 @@
     <el-dialog
       :visible.sync="dialogFormVisible"
       :show-close="false"
-      title="收藏夹">
+      title="修改链接">
       <el-form :model="form">
         <el-form-item label="图标地址">
           <el-input
@@ -25,17 +25,10 @@
         slot="footer"
         class="dialog-footer">
         <el-button
-          v-if="linkId"
           :disabled="!form.linkToSrc"
           type="primary"
           @click="editLink()">更新</el-button>
         <el-button
-          v-else
-          :disabled="!form.linkToSrc"
-          type="primary"
-          @click="addLink()">保存</el-button>
-        <el-button
-          v-if="linkId"
           type="danger"
           @click="deleteLink()">删除</el-button>
         <el-button @click="esc()">取 消</el-button>
@@ -47,6 +40,7 @@
 export default {
   data() {
     return {
+      groupId: '',
       dialogFormVisible: false,
       linkId: 0,
       form: {
@@ -57,19 +51,12 @@ export default {
     };
   },
   methods: {
-    show(linkId) {
+    show(item) {
       this.dialogFormVisible = true;
-      if (linkId) {
-        this.linkId = linkId;
-        for (let i of this.$store.state.linkList.dataList) {
-          if (i.linkId === linkId) {
-            this.form.linkIco = i.linkIco;
-            this.form.linkName = i.linkName;
-            this.form.linkToSrc = i.linkToSrc;
-            return;
-          }
-        }
-      }
+      this.form.linkIco = item.shareLinkIcoScr;
+      this.form.linkName = item.shareLinkName;
+      this.form.linkToSrc = item.shareLinkSrc;
+      this.linkId = item.id;
     },
     esc() {
       this.form.linkIco = '';
@@ -77,28 +64,6 @@ export default {
       this.form.linkToSrc = '';
       this.dialogFormVisible = false;
       this.linkId = 0;
-    },
-    addLink() {
-      const data = {
-        linkIco: this.form.linkIco.trim(),
-        linkName: this.form.linkName.trim(),
-        linkToSrc: this.form.linkToSrc.trim(),
-        userId: this.$store.state.user.userId,
-      };
-      this.$store.dispatch('addLink', data).then(resolve => {
-        if (resolve) {
-          this.$message({
-            message: '添加成功 !',
-            type: 'success',
-          });
-          this.esc();
-        } else {
-          this.$message({
-            message: '添加失败, 请重试 !',
-            type: 'error',
-          });
-        }
-      });
     },
     editLink() {
       const data = {
@@ -132,7 +97,7 @@ export default {
       }).then(() => {
         const data = {
           userId: this.$store.state.user.userId,
-          linkId: this.linkId,
+          id: this.linkId,
         };
         this.$store.dispatch('deleteItem', data).then(resolve => {
           if (resolve) {
@@ -147,8 +112,6 @@ export default {
               type: 'error',
             });
           }
-        }).catch(reject => {
-          console.log('后端还没写该接口', reject);
         });
       }).catch(() => {
         this.$message({
@@ -171,7 +134,7 @@ export default {
         }
         .dialog-footer {
             .el-button {
-                width: 30%;
+                width: 20%;
             }
         }
     }

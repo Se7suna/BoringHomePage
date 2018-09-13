@@ -21,8 +21,7 @@ import {
   reqNewGroup,
   reqJoinGroup,
   reqPushGroup,
-  reqAgree,
-  reqReject,
+  reqUpdataLink,
   reqRegUser,
   reqGetHash,
 } from '../api';
@@ -49,8 +48,10 @@ export default {
     return result.resCode;
   },
   async getGroupLink({commit}, data) {
+    // 为多群组功能提前铺垫
     for (let i of data) {
-      const result = await reqGroupLink(i);
+      const groupId = {groupId: i.groupId};
+      const result = await reqGroupLink(groupId);
       if (result.resCode === 1) {
         commit(RECEIVE_SAVELIST, result.resData);
       }
@@ -58,7 +59,9 @@ export default {
   },
   async addLink({commit}, data) {
     const result = await reqAddLink(data);
-    commit(RECEIVE_ADDLINK, result.resData);
+    if (result.resCode === 1) {
+      commit(RECEIVE_ADDLINK, result.resData);
+    }
     return result.resCode;
   },
   async updateLink({commit}, data) {
@@ -68,11 +71,12 @@ export default {
   },
   async deleteItem({commit}, data) {
     const result = await reqDeleteItem(data);
-    commit(RECEIVE_DELETEITEM, result.resData);
+    if (result.resCode === 1) {
+      commit(RECEIVE_DELETEITEM, data.id);
+    }
     return result.resCode;
   },
   logOut({commit}) {
-    window.localStorage.boring = '';
     commit(LOGOUT);
   },
   async quitGroup({commit}, data) {
@@ -99,14 +103,11 @@ export default {
     const result = await reqPushGroup(data);
     return result.resCode;
   },
-  async agree({commit}, data) {
-    const result = await reqAgree(data);
-    commit(RECEIVE_HANDLEPUSH, result.linkId);
-    return result.resCode;
-  },
-  async reject({commit}, data) {
-    const result = await reqReject(data);
-    commit(RECEIVE_HANDLEPUSH, result.linkId);
+  async updataLink({commit}, data) {
+    const result = await reqUpdataLink(data);
+    if (result.resCode === 1) {
+      commit(RECEIVE_HANDLEPUSH, result.linkId);
+    }
     return result.resCode;
   },
 };

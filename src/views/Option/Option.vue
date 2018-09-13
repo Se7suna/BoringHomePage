@@ -5,26 +5,17 @@
         label="收藏夹"
         name="first">
         <ul>
-          <template v-if="this.$store.state.linkList">
+          <template v-if="$store.state.user.linkOfUser">
             <li
-              v-for="i of this.$store.state.linkList.dataList"
-              :key="i.linkId"
+              v-for="i of $store.state.user.linkOfUser"
+              :key="i.id"
               class="option_item"
-              @click="editLink(i.linkId)">
-              <img :src="i.linkIco">
-              <p>{{ i.linkName }}</p>
-              <p>{{ i.linkToSrc }}</p>
+              @click="editLink(i)">
+              <img :src="i.shareLinkIcoScr">
+              <p>{{ i.shareLinkName }}</p>
+              <p>{{ i.shareLinkSrc }}</p>
             </li>
           </template>
-          <div
-            v-if="$store.state.user.userId"
-            class="option_add">
-            <el-button
-              round
-              @click="showAlert()">
-              <i class="el-icon-plus"/>
-            </el-button>
-          </div>
           <p
             v-else
             class="option_hint">请登录获取网络收藏夹</p>
@@ -39,7 +30,7 @@
               :class="{show: colorShow}"
               class="msg">{{ loginMsg }}</p>
             <div
-              v-if="!this.$store.state.user.key"
+              v-if="this.$store.state.hashList.lenght"
               class="new">
               <el-button
                 :disabled="!$store.state.user.userId"
@@ -54,7 +45,7 @@
                 @click="showUpdate()">上传链接</el-button>
             </div>
             <div
-              v-if="!this.$store.state.user.key"
+              v-if="this.$store.state.hashList.lenght"
               class="join">
               <el-button
                 :disabled="!$store.state.user.userId"
@@ -75,22 +66,22 @@
                 @click="changeBg()">更换背景</el-button>
             </div>
             <ul
-              v-if="$store.state.user.push"
+              v-if="$store.getters.isMaster"
               class="list">
               <li
-                v-for="i of $store.state.user.push"
-                :key="i.linkId"
+                v-for="i of $store.state.linkList"
+                :key="i.id"
                 class="option_item">
-                <img :src="i.linkIco">
-                <p class="top">{{ i.linkName }}</p>
-                <p class="mid">{{ i.linkToSrc }}</p>
+                <img :src="i.shareLinkIcoScr">
+                <p class="top">{{ i.shareLinkName }}</p>
+                <p class="mid">{{ i.shareLinkSrc }}</p>
                 <!-- <p class="bot"></p> -->
                 <el-button
                   type="success"
-                  @click="agree(i.linkId)">同意</el-button>
+                  @click="agree(i)">同意</el-button>
                 <el-button
                   type="danger"
-                  @click="reject(i.linkId)">拒绝</el-button>
+                  @click="reject(i)">拒绝</el-button>
               </li>
             </ul>
           </div>
@@ -131,15 +122,11 @@ export default {
   computed: {
     loginMsg() {
       const state = this.$store.state;
-      if (!state.user.id) {
+      if (!state.user.userId) {
         return '状态: 未登录, 请登录!';
       }
       if (state.hashList.length) {
-        let msg = state.hashList[0];
-        for (let i = 1, len = state.hashList.length; i < len; i++) {
-          msg += ', ' + state.hashList[i];
-        }
-        return `当前群组: ${msg}`;
+        return this.$store.getters.isMaster ? '状态: 群主登录' : '状态: 群员登录';
       } else {
         return '状态: 暂未加入群组';
       }
@@ -179,8 +166,8 @@ export default {
         });
       });
     },
-    editLink(id) {
-      this.$refs.alert.show(id);
+    editLink(item) {
+      this.$refs.alert.show(item);
     },
     quitGroup() {
       this.$confirm('此操作将退出该群组, 是否继续?', '提示', {
@@ -235,7 +222,7 @@ export default {
       this.$prompt('请输入群组hash', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        inputPattern: /^\w{6,6}$/,
+        inputPattern: /^\w{32,32}$/,
         inputErrorMessage: 'hash格式不正确',
       }).then(({value}) => {
         const data = {
@@ -265,12 +252,12 @@ export default {
     showUpdate() {
       this.$refs.update.show();
     },
-    agree(linkId) {
+    agree(item) {
       const data = {
-        userId: this.$store.state.user.userId,
-        linkId,
+        id: item.id,
+        shareLinkState: 1,
       };
-      this.$store.dispatch('agree', data).then(resolve => {
+      this.$store.dispatch('updataLink', data).then(resolve => {
         if (resolve) {
           this.$message({
             type: 'success',
@@ -282,21 +269,19 @@ export default {
             type: 'error',
           });
         }
-      }).catch(reject => {
-        console.log(reject);
       });
     },
-    reject(linkId) {
+    reject(item) {
       this.$confirm('确认拒绝该请求?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
         const data = {
-          userId: this.$store.state.user.userId,
-          linkId,
+          id: item.id,
+          shareLinkState: 0,
         };
-        this.$store.dispatch('reject', data).then(resolve => {
+        this.$store.dispatch('updataLink', data).then(resolve => {
           if (resolve) {
             this.$message({
               type: 'success',
@@ -308,10 +293,7 @@ export default {
               type: 'error',
             });
           }
-        }).catch(reject => {
-          console.log(reject);
         });
-
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -334,7 +316,7 @@ export default {
         right: 0;
         width: 15%;
         height: 100%;
-        padding-bottom: 8%;
+        padding-bottom: 4%;
         background-color: #eee;
         .el-tabs {
             height: 100%;
@@ -361,12 +343,17 @@ export default {
             font-weight: 800;
         }
         .el-tab-pane {
-            padding: 5% 6.5% 0;
+            padding: 5% 6.5%;
             height: 100%;
             overflow: auto;
             ul {
                 padding-bottom: 8vh;
             }
+        }
+        .el-button {
+          text-align: center;
+          padding-left: 0;
+          padding-right: 0;
         }
 
     }
@@ -384,16 +371,16 @@ export default {
             margin-top: 4%
         }
     }
-    .option_add {
-        display: flex;
-        justify-content: center;
-        i {
-            padding: 5px;
-            font-size: 22px;
-            font-weight: 800;
-        }
+    // .option_add
+    //     display: flex;
+    //     justify-content: center;
+    //     i
+    //         padding: 5px;
+    //         font-size: 22px;
+    //         font-weight: 800;
+    //
         // padding-bottom: 6%;
-    }
+
     .option_hint {
         color: #606266;
        margin-top: 30vh;

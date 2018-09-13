@@ -27,7 +27,7 @@
         <el-button
           :disabled="!form.linkToSrc.trim()"
           type="primary"
-          @click="pushGroup()">保存</el-button>
+          @click="addLink()">保存</el-button>
         <el-button @click="esc()">取 消</el-button>
       </div>
     </el-dialog>
@@ -55,30 +55,26 @@ export default {
       this.form.linkToSrc = '';
       this.dialogFormVisible = false;
     },
-    pushGroup() {
-      const user = this.$store.state.user;
+    addLink() {
+      // hashList[0], 为多群组功能预留
       const data = {
-        userId: user.userId,
-        groupId: user.key,
-        linkIco: this.form.linkIco.trim(),
-        linkName: this.form.linkName.trim(),
-        linkToSrc: this.form.linkToSrc.trim(),
+        groupId: this.$store.state.hashList[0].groupId,
+        userId: this.$store.state.user.userId,
+        shareLinkSrc: this.form.linkToSrc.trim(),
       };
-      this.$store.dispatch('pushGroup', data).then(resolve => {
+      this.$store.dispatch('addLink', data).then(resolve => {
         if (resolve) {
           this.$message({
-            message: '提交成功 !',
+            message: '添加成功, 请等待群组审核 !',
             type: 'success',
           });
           this.esc();
         } else {
           this.$message({
-            message: '提交失败, 请重试 !',
+            message: '添加失败, 请重试 !',
             type: 'error',
           });
         }
-      }).catch(reject => {
-        console.log(reject);
       });
     },
   },

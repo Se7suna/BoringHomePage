@@ -21,8 +21,8 @@ export default {
       state.linkList.push(i);
     }
   },
-  [RECEIVE_ADDLINK](state, item) {
-    state.linkList.dataList.push(item);
+  [RECEIVE_ADDLINK]() {
+    // state.linkList.dataList.push();
   },
   [RECEIVE_UPDATEITEM](state, item) {
     for (let i of state.linkList.dataList) {
@@ -37,7 +37,7 @@ export default {
     }
   },
   [RECEIVE_DELETEITEM](state, linkId) {
-    const arr = state.linkList.dataList;
+    const arr = state.user.linkOfUser;
     for (let i = 0, len = arr.length; i < len; i++) {
       if (arr[i].linkId === linkId) {
         arr.splice(i, 1);
@@ -47,6 +47,8 @@ export default {
   },
   [LOGOUT](state) {
     state.user = {};
+    state.linkList = [];
+    state.hashList = [];
   },
   [RECEIVE_QUITGROUP](state, data) {
     state.user.key = data.key;
@@ -68,7 +70,7 @@ export default {
   },
   [RECEIVE_GETHASH](state, arr) {
     for (let i of arr) {
-      state.hashList.push(i.groupId);
+      state.hashList.push({groupId: i.groupId, groupLord: i.groupLord});
     }
   },
 };

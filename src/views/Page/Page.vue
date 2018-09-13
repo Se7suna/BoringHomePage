@@ -2,7 +2,7 @@
   <div class="page">
     <Search/>
     <div
-      v-if="pageSort"
+      v-if="pageSort.length"
       class="swiper-container">
       <div class="swiper-wrapper">
         <ul
@@ -11,11 +11,11 @@
           class="swiper-slide page_ul">
           <li
             v-for="i of list"
-            :key="i.linkId"
+            :key="i.id"
             class="page_ul_item"
-            @click="link(i.linkToSrc)">
-            <div :style="{backgroundImage: `url(${i.linkIco})`}"/>
-            <p>{{ i.linkName }}</p>
+            @click="link(i.shareLinkSrc)">
+            <div :style="{backgroundImage: `url(${i.shareLinkIcoScr})`}"/>
+            <p>{{ i.shareLinkName }}</p>
           </li>
         </ul>
       </div>
@@ -33,8 +33,8 @@ export default {
   },
   computed: {
     pageSort() {
-      if (this.$store.state.linkList.dataList) {
-        const list = this.$store.state.linkList.dataList;
+      const list = this.$store.state.user.linkOfUser;
+      if (list) {
         let res = [];
         let item = [];
         for (let i = 0, len = list.length; i < len; i++) {

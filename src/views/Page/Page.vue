@@ -2,7 +2,7 @@
   <div class="page">
     <Search/>
     <div
-      v-if="pageSort.length"
+      v-if="pageSort"
       class="swiper-container">
       <div class="swiper-wrapper">
         <ul
@@ -65,6 +65,9 @@ export default {
   },
   methods: {
     link(url) {
+      if (!/^http/i.test(url)) {
+        url = 'http://' + url;
+      }
       window.location.href = url;
     },
   },

@@ -66,28 +66,27 @@ export default {
       this.linkId = 0;
     },
     editLink() {
-      const data = {
-        linkId: this.linkId,
-        linkIco: this.form.linkIco.trim(),
-        linkToSrc: this.form.linkToSrc.trim(),
-        linkName: this.form.linkName.trim(),
-      };
-      this.$store.dispatch('updateLink', data).then(resolve => {
-        if (resolve) {
-          this.$message({
-            message: '更新成功!',
-            type: 'success',
-          });
-          this.esc();
-        } else {
-          this.$message({
-            message: '更新失败, 请重试 !',
-            type: 'error',
-          });
-        }
-      }).catch(reject => {
-        console.log('后端还没写该接口', reject);
-      });
+      alert('后台还未完成, 该功能暂不可用~');
+      // const data = {
+      //   linkId: this.linkId,
+      //   linkIco: this.form.linkIco.trim(),
+      //   linkToSrc: this.form.linkToSrc.trim(),
+      //   linkName: this.form.linkName.trim(),
+      // };
+      // this.$store.dispatch('updateLink', data).then(resolve => {
+      //   if (resolve) {
+      //     this.$message({
+      //       message: '更新成功!',
+      //       type: 'success',
+      //     });
+      //     this.esc();
+      //   } else {
+      //     this.$message({
+      //       message: '更新失败, 请重试 !',
+      //       type: 'error',
+      //     });
+      //   }
+      // });
     },
     deleteLink() {
       this.$confirm('此操作将删除该链接, 是否继续?', '警告', {

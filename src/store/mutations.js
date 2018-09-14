@@ -60,7 +60,7 @@ export default {
     state.hashList.push(data.groupId);
   },
   [RECEIVE_HANDLEPUSH](state, linkId) {
-    const arr = state.user.push;
+    const arr = state.linkList;
     for (let i = 0, len = arr.length; i < len; i++) {
       if (arr[i].linkId === linkId) {
         arr.splice(i, 1);

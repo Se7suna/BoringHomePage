@@ -316,39 +316,47 @@ export default {
         right: 0;
         width: 15%;
         height: 100%;
-        padding-bottom: 4%;
         background-color: #eee;
         .el-tabs {
-            height: 100%;
+            height: 92%;
+        }
+        .el-tabs__nav-scroll,
+        .el-tabs__nav-wrap{
+          height: 100%;
+        }
+        .el-tabs__header {
+          height: 8%;
+          margin: 0;
         }
         .el-tabs__content {
-            height: 100%;
+            height: 92%;
             .show {
                 color: #67C23A
             }
         }
         .el-tabs__nav{
             width: 100%;
-            height: 80px;
+            height: 100%;
             background-color: #fff;
-            padding: 20px;
         }
         .el-tabs__active-bar {
             width: 50% !important
         }
         .el-tabs__item{
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
             width: 50%;
+            vertical-align: middle;
             text-align: center;
             font-size: 22px;
             font-weight: 800;
+            padding: 0;
         }
         .el-tab-pane {
-            padding: 5% 6.5%;
+            padding: 8% 6.5% 0;
             height: 100%;
             overflow: auto;
-            ul {
-                padding-bottom: 8vh;
-            }
         }
         .el-button {
           text-align: center;
@@ -371,15 +379,6 @@ export default {
             margin-top: 4%
         }
     }
-    // .option_add
-    //     display: flex;
-    //     justify-content: center;
-    //     i
-    //         padding: 5px;
-    //         font-size: 22px;
-    //         font-weight: 800;
-    //
-        // padding-bottom: 6%;
 
     .option_hint {
         color: #606266;
@@ -391,7 +390,7 @@ export default {
         justify-content: center;
         position: absolute;
         width: 100%;
-        height: 8vh;
+        height: 8%;
         bottom: 0;
         left: 0;
         text-align: center;

@@ -1,5 +1,5 @@
 <template>
-  <div class="update">
+  <div class="addLink">
     <el-dialog
       :visible.sync="dialogFormVisible"
       :show-close="false"
@@ -81,7 +81,7 @@ export default {
 };
 </script>
 <style lang="less">
-    .update {
+    .addLink {
         .el-dialog {
             width: 30%;
             min-width: 400px;

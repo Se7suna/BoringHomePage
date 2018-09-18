@@ -54,7 +54,9 @@ export default {
     state.user.key = data.key;
   },
   [RECEIVE_NEWGROUP](state, data) {
-    state.hashList.push(data.groupId);
+    if (data.resCode === 1) {
+      state.hashList.push(data.data.resData);
+    }
   },
   [RECEIVE_JOINGROUP](state, data) {
     state.hashList.push(data.groupId);

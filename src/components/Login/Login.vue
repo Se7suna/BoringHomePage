@@ -170,5 +170,8 @@ export default {
         .el-dialog__body {
             padding: 50px 40px;
         }
+        .el-button {
+          width: 25%;
+        }
     }
 </style>

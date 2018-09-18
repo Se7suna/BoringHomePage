@@ -29,31 +29,34 @@
             <p
               :class="{show: colorShow}"
               class="msg">{{ loginMsg }}</p>
+            <p
+              v-if="$store.state.hashList.length"
+              class ="hash">
+              {{ $store.state.hashList[0].groupId }}
+            </p>
             <div
-              v-if="this.$store.state.hashList.lenght"
+              v-if="!$store.state.hashList.length && $store.state.user.userId"
               class="new">
               <el-button
-                :disabled="!$store.state.user.userId"
                 type="primary"
                 @click="newGroup()">创建群组</el-button>
             </div>
             <div
-              v-else
+              v-if="$store.state.hashList.length"
               class="push">
               <el-button
                 type="primary"
-                @click="showUpdate()">上传链接</el-button>
+                @click="showAddLink()">上传链接</el-button>
             </div>
             <div
-              v-if="this.$store.state.hashList.lenght"
+              v-if="!$store.state.hashList.length && $store.state.user.userId"
               class="join">
               <el-button
-                :disabled="!$store.state.user.userId"
                 type="primary"
                 @click="joinGroup()">加入群组</el-button>
             </div>
             <div
-              v-else
+              v-if="$store.state.hashList.length"
               class="quit">
               <el-button
                 type="danger"
@@ -98,20 +101,20 @@
         type="danger"
         @click="logOut()">注销</el-button>
     </div>
-    <Alert ref="alert"/>
+    <EditLink ref="editLink"/>
     <Login ref="login"/>
-    <Update ref="update"/>
+    <AddLink ref="addLink"/>
   </div>
 </template>
 <script>
-import Alert from '../../components/Alert/Alert.vue';
+import EditLink from '../../components/EditLink/EditLink.vue';
 import Login from '../../components/Login/Login.vue';
-import Update from '../../components/Update/Update.vue';
+import AddLink from '../../components/AddLink/AddLink.vue';
 export default {
   components: {
-    Alert,
+    EditLink,
     Login,
-    Update,
+    AddLink,
   },
   props: {
     changeBg: {
@@ -142,9 +145,6 @@ export default {
     };
   },
   methods: {
-    showAlert() {
-      this.$refs.alert.show();
-    },
     showLogin() {
       this.$refs.login.show();
     },
@@ -155,6 +155,7 @@ export default {
         type: 'warning',
       }).then(() => {
         this.$store.dispatch('logOut');
+        window.localStorage.boring = '';
         this.$message({
           type: 'success',
           message: '退出成功!',
@@ -167,7 +168,9 @@ export default {
       });
     },
     editLink(item) {
-      this.$refs.alert.show(item);
+      if (this.$store.getters.isMaster) {
+        this.$refs.editLink.show(item);
+      }
     },
     quitGroup() {
       this.$confirm('此操作将退出该群组, 是否继续?', '提示', {
@@ -249,8 +252,8 @@ export default {
         });
       });
     },
-    showUpdate() {
-      this.$refs.update.show();
+    showAddLink() {
+      this.$refs.addLink.show();
     },
     agree(item) {
       const data = {
@@ -415,6 +418,14 @@ export default {
             background-color: #fff;
             border-radius: 5px;
             padding: 8% 0;
+        }
+        .hash {
+            word-wrap: break-word;
+            border: 1px solid #999;
+            color: #666;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 3px;
         }
         .list {
             .el-button {

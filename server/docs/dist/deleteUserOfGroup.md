@@ -1,16 +1,16 @@
 
 
-## updateLinkOfGroup
+## deleteUserOfGroup.php
 
 ### 1) 请求地址
 
-> /updateLinkOfGroup.php
+>http://47.106.86.139:9010/deleteUserOfGroup.php
 
 ### 2) 调用方式：HTTP post
 
 ### 3) 接口描述：
 
-* 用户根据 群组id 与 用户id 与 链接地址 在群组中新增链接
+* ` 用户/群主 ` 根据 ` 群组id ` 与 ` 用户的id ` , 调用此接口, 则删除之~
 
 ### 4) 请求参数:
 
@@ -18,8 +18,8 @@
 #### POST参数:
 |字段名称       |字段说明         |类型            |必填            |备注     |
 | -------------|:--------------:|:--------------:|:--------------:| ------:|
-|id|链接的id|string|Y|-|
-|shareLinkState|状态|string|Y|0表示未审核(默认未审核), 1表示审核通过|
+|groupId|群组id|string|Y|-|
+|userId|被删的用户id|string|Y|-|
 
 
 
@@ -29,7 +29,7 @@
 {
     "resCode": 1,
     "resData": [],
-    "resInfo": "成功: 状态更新成功！"
+    "resInfo": "成功: 用户删除成功！"
 }
 ```
 

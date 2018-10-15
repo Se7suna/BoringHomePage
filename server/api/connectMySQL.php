@@ -42,12 +42,9 @@ if ($conn->connect_error) {
   ),JSON_UNESCAPED_UNICODE );
 } 
 
-
-
-
 /**
  * 数组 转 对象
- *
+ * 
  * @param array $arr 数组
  * @return object
  */

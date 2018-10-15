@@ -9,6 +9,7 @@ require("./connectMySQL.php");
 require('./phpquery-master/phpQuery/phpQuery.php');
 
 $json_data = json_decode(file_get_contents('php://input'));
+// $json_data = array_to_object($_POST); // 本地测试用
 
 if(!isset($json_data->userId)){ // 用户
   echo json_encode(array(
@@ -55,6 +56,12 @@ $shareLinkState = 0; // 分享的链接状态
 $groupId = $json_data->groupId;
 $userId = $json_data->userId;
 $shareLinkSrc = $json_data->shareLinkSrc;
+$groupLord = '';
+
+// 获得群主id (groupLord)
+$sql_getGroupLord = "select * from `group` where groupId = '$groupId' limit 1";
+$obj_getGroupLord = mysqli_fetch_object(mysqli_query($conn , $sql_getGroupLord));
+$groupLord = $obj_getGroupLord -> groupLord;
 
 // 通过爬虫 获得链接的图标地址与 链接title
 $content = get_fcontent($shareLinkSrc);
@@ -72,17 +79,18 @@ if(isset($json_data->shareLinkIcoScr)){
   $shareLinkIcoScr = $json_data->shareLinkIcoScr;
 }
 
-$sql = "INSERT INTO `linkofgroup` 
-(groupId,userId,shareLinkSrc,userName,shareLinkIcoScr,shareLinkState,shareLinkName) 
+$sql_get = "INSERT INTO `linkofgroup` 
+(groupId,userId,shareLinkSrc,userName,shareLinkIcoScr,shareLinkState,shareLinkName,groupLord) 
 VALUES 
-('$groupId', '$userId', '$shareLinkSrc', '$userName', '$shareLinkIcoScr', '$shareLinkState', '$shareLinkName')";
+('$groupId', '$userId', '$shareLinkSrc', '$userName', '$shareLinkIcoScr', '$shareLinkState', '$shareLinkName', '$groupLord')";
 
-if(mysqli_query($conn, $sql)){
+if(mysqli_query($conn, $sql_get)){
   echo json_encode(array(
     'resCode'=>1,
     'resData'=>array(
       'groupId' => $groupId,
       'userId' => $userId,
+      'groupLord' => $groupLord,
       'shareLinkSrc' => $shareLinkSrc,
       'userName' => $userName,
       'shareLinkIcoScr' => $shareLinkIcoScr,

@@ -62,6 +62,9 @@ $groupLord = '';
 $sql_getGroupLord = "select * from `group` where groupId = '$groupId' limit 1";
 $obj_getGroupLord = mysqli_fetch_object(mysqli_query($conn , $sql_getGroupLord));
 $groupLord = $obj_getGroupLord -> groupLord;
+if($groupLord === $userId){ // 假设是群主, 则直接过, 无需再验证
+  $shareLinkState = 1;
+}
 
 // 通过爬虫 获得链接的图标地址与 链接title
 $content = get_fcontent($shareLinkSrc);
@@ -112,8 +115,6 @@ if(mysqli_query($conn, $sql_get)){
   mysqli_close($conn);
   exit;
 }
-
-
 
 /**
  * 添加 USERAGENT , 模拟真实浏览器访问

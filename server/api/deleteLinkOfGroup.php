@@ -7,6 +7,7 @@
  */
 require("./connectMySQL.php");
 $json_data = json_decode(file_get_contents('php://input'));
+// $json_data = array_to_object($_POST); // 本地测试用
 
 if(!isset($json_data->id)){
   echo json_encode(array(
@@ -15,17 +16,6 @@ if(!isset($json_data->id)){
       
     ),
     'resInfo'=>"错误: 请选择链接 !"
-  ),JSON_UNESCAPED_UNICODE );
-  mysqli_close($conn);
-  exit;
-}
-if(!isset($json_data->groupId)){
-  echo json_encode(array(
-    'resCode'=>0,
-    'resData'=>array(
-      
-    ),
-    'resInfo'=>"错误: 请指定群组 !"
   ),JSON_UNESCAPED_UNICODE );
   mysqli_close($conn);
   exit;
@@ -43,11 +33,10 @@ if(!isset($json_data->userId)){
 }
 
 $id = $json_data->id;
-$groupId = $json_data->groupId;
 $userId = $json_data->userId;
 
-// 判断是否存在
-$sql1 = "SELECT * FROM linkofgroup WHERE id = '$id' and groupId = '$groupId'";
+// 判断是否具有权限
+$sql1 = "SELECT * FROM linkofgroup WHERE id = '$id' and groupLord = '$userId'";
 $rows = mysqli_fetch_assoc(mysqli_query($conn, $sql1));
 if(!$rows){
   echo json_encode(array(

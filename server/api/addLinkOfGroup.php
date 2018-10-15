@@ -68,7 +68,16 @@ if($groupLord === $userId){ // 假设是群主, 则直接过, 无需再验证
 
 // 通过爬虫 获得链接的图标地址与 链接title
 $content = get_fcontent($shareLinkSrc);
-phpQuery::newDocumentHTML($content);
+// 其实原因是: http://www.365jz.com/article/24480
+// 这个好重要的 : https://my.oschina.net/querying/blog/1865153
+libxml_use_internal_errors(true);
+phpQuery::newDocumentHTML($content, $charset='utf-8');
+libxml_clear_errors();
+// phpQuery::newDocumentFile($shareLinkSrc);
+// $doc = phpQuery::newDocumentHTML(str_replace("gb2312", "utf-8", $content));
+// $doc = phpQuery::newDocumentHTML(iconv('gb2312','utf-8',$content));
+// phpQuery::selectDocument($doc);
+
 $pageTitle = pq('title')->html();
 $pageFavicon = favicon_file($shareLinkSrc);
 

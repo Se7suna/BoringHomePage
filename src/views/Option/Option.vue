@@ -179,6 +179,7 @@ export default {
         type: 'warning',
       }).then(() => {
         const data = {
+          groupId: this.$store.state.hashList[0].groupId,
           userId: this.$store.state.user.userId,
         };
         this.$store.dispatch('quitGroup', data).then(resolve => {

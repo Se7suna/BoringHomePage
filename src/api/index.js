@@ -6,7 +6,7 @@ export const reqGroupLink = data => ajax(data, URL + '/getLinksOfGroup.php', 'GE
 export const reqAddLink = data => ajax(data, URL + '/addLinkOfGroup.php', 'POST');
 export const reqUpdateItem = data => ajax(data, URL + '/updateFavoriteLinks.php', 'GET');
 export const reqDeleteItem = data => ajax(data, URL + '/deleteLinkOfGroup.php', 'POST');
-export const reqQuitGroup = data => ajax(data, URL + '/clearKEY.php', 'GET');
+export const reqQuitGroup = data => ajax(data, URL + '/deleteUserOfGroup.php', 'POST');
 export const reqNewGroup = data => ajax(data, URL + '/generateKEY.php', 'POST');
 export const reqJoinGroup = data => ajax(data, URL + '/submitKEY.php', 'POST');
 export const reqPushGroup = data => ajax(data, URL + '/addLinkOfGroup.php', 'GET');
